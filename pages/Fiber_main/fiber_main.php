@@ -6,6 +6,7 @@
   <title>Super Fiber Main Stock</title>
   <?php session_start();       // Start the session ?>   
   <?php
+  //This is the first time to write the code on the github
 if (!isset($_SESSION['id'])) {         // condition Check: if session is not set. 
   header('location: ../../login.php');   // if not set the user is sendback to login page.
 }
