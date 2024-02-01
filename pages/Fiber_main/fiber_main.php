@@ -251,6 +251,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
   </div>
   <!-- in modal -->
   <!-- This is for the first time to work on the git -->
+  <!-- This is the second time for commit it -->
   <div class="modal fade" id="modal-in">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
