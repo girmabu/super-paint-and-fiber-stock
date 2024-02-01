@@ -250,6 +250,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         <!-- /.modal-dialog -->
   </div>
   <!-- in modal -->
+  <!-- This is for the first time to work on the git -->
   <div class="modal fade" id="modal-in">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
