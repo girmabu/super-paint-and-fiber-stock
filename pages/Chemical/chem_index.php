@@ -42,6 +42,11 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         <i class="fa fa-cart-plus" aria-hidden="true"></i>Request
         </a>
       </i>
+      <li class="breadcrumb-item">
+        <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-out">
+        <i class="fa fa-minus-circle fa-1x"  aria-hidden="true"></i>Out
+        </a>
+      </i>
       </li>
     </ul>
     <!-- Right navbar links -->
@@ -252,7 +257,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                   <option value="">Select...</option>
                    <?php 
                    include('connect.php');
-                    $query ="SELECT * FROM main_store_item where chemical_item=1";
+                    $query ="SELECT * FROM main_store_item where code=1";
                      $result = $conn->query($query);
                      if($result->num_rows> 0){
                      while($optionData=$result->fetch_assoc()){
@@ -303,7 +308,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                   <option value="">Select...</option>
                   <?php 
                             
-                   $query ="SELECT * FROM main_store_item where code=1 OR chemical_item=1";
+                   $query ="SELECT * FROM main_store_item where chemical_item=1";
                    $result = $conn->query($query);
                    if($result->num_rows> 0){
                    while($optionData=$result->fetch_assoc()){
@@ -673,6 +678,93 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         </div>
         <!-- /.modal-dialog -->
   </div>
+  <!-- out modal that means Jale works -->
+  <div class="modal fade" id="modal-out">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header" style="color:blue">
+              <h4 class="modal-title"> item out form</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+             <form class="form-horizontal" action="process.php" method="POST">
+              <div class="card-body">
+               <div class="form-group row"  id="minimal_div">
+                <label for="inputEmail3"class="col-sm-2 col-form-label" id="label_div">Product Name</label>
+                 <select name="main_store_item_id" required id="minimal_input" style="width:83% !important">
+                  <option value="">Select...</option>
+                   <?php 
+                   include('connect.php');
+                    $query ="SELECT * FROM main_store_item where chemical_item=1";
+                     $result = $conn->query($query);
+                     if($result->num_rows> 0){
+                     while($optionData=$result->fetch_assoc()){
+                     $option =$optionData['item_name'];
+                     $id =$optionData['id'];
+                     $uom = $optionData['uom'];
+                     ?> 
+                     <option value="<?php echo $id; ?>"><?php  echo $id; echo "----"; echo $option;echo "------------"; echo $uom;?> </option>
+                     <div class="form-group">
+                    <?php
+                    }}
+                   ?>
+                </select>
+              </div>
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Quantity</label>
+                 <div class="col-sm-10">
+                  <input type="float" required name="outs" required class="form-control" placeholder="Quantity">
+                 </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Ref_no</label>
+                 <div class="col-sm-10">
+                  <input type="text" name="ref_no" class="form-control"  placeholder="Reference Number">
+                 </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Date</label>
+                 <div class="col-sm-10">
+                  <input type="date" required name="date" class="form-control">
+                 </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Checked_by</label>
+                 <div class="col-sm-10">
+                  <input type="text" value="<?php echo $_SESSION['name']; ?>" readonly name="approved_by" class="form-control">
+                 </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label"> Received_by</label>
+                 <select name="received_by" required id="minimal_input" required style="width:83% !important">
+                 <option value="">Select......</option>
+                  <option value="Electric">Electric</option>
+                  <option value="Construction">Construction</option>
+                  <option value="Production">Production</option>
+                  <option value="Metal">Metal</option>
+                  <option value="Flower_pot">Flower_pot</option> 
+                  <option value="Genda_getema">Genda_getema</option>
+                  <option value="Technic">Technic</option>
+                  <option value="Finishing">Finishing</option>
+                  <option value="Paint">Paint</option>
+                  <option value="Nibret_astedader">Nibret_astedader</option>
+                  <option value="Mekanisa">Mekanisa</option>
+                  <option value="Transfer">Transfer</option>
+                  <option value="other">other</option>
+                 </select>
+              </div>
+            </div>
+            <div class="card-footer">
+             <button type="submit" name="chem_out" class="btn btn-block btn-outline-success btn-lg">Out</button>
+             <button type="submit"  class="btn btn-block btn-outline-danger btn-sm" data-dismiss="modal">Cancel</button>
+            </div>
+           </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+  </div>
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -712,7 +804,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
               <?php
                 $connection = mysqli_connect("localhost","root","");
                 $db = mysqli_select_db($connection, 'ssms');
-                $query = "SELECT * FROM chemical_store_item";
+                $query = " SELECT * FROM chemical_store_item";
                 $query_run = mysqli_query($connection, $query);
                 ?>
                   <?php $session= $_SESSION['role']; ?>
@@ -750,7 +842,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                 ?>   
           <tr>
        <td> <?php echo $row['id']; ?> </td>
-                <td> <?php echo $option ?> </td>
+                <td> <?php echo $option; ?> </td>
                 <td> <?php echo $row['uom']; ?> </td>
                 <td> <?php echo $row['quantity']; ?> </td>
          <td>

@@ -51,7 +51,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-out">
-        <i class="fa fa-outdent" aria-hidden="true"></i>out
+        <i class="fa fa-minus-circle fa-1x"  aria-hidden="true"></i></i>out
         </a>
       </li>
       <?php
@@ -149,7 +149,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
             <ul class="nav nav-treeview">
         
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="fiber_mini.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>List</p>
                 </a>
@@ -914,12 +914,12 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
           }
           ?>
          <button type="button"  class="btn btn-info editbtn" <?php echo $dis; ?> data-toggle="modal" data-target="#modal-edit">
-         <i class="fa fa-pencil-square-o" height:50px !important;></i>
-          </button>
+         <i class="fa fa-pencil-square-o"></i>
+        </button>
         </td>
         <td>
         <button type="button" class="btn btn-danger deletebtn" <?php echo $dis; ?> data-toggle="modal" data-target="#modal-delete">
-        <i class="fa fa-times"></i>
+        <i class="fa fa-minus-circle fa-1x"  aria-hidden="true"></i>
         </a>
           </td>
      </tr>

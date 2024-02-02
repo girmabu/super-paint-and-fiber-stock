@@ -47,8 +47,10 @@ if(isset($_POST['insertdata']))
     else{
     $query = "INSERT INTO chemical_store_item (`item_id`,`uom`,`quantity`) VALUES ('$item_id','$uom','$quantity')";
      $query_run = mysqli_query($conn, $query);
-    if($query_run)
-    {
+     $sql="UPDATE main_store_item  SET chemical_item =1 where id='$item_id'";
+     $sql_query = mysqli_query($conn, $sql);
+     if($query_run)
+     {
         echo '<script> alert("Data Saved"); </script>';
         header('Location:chem_index.php');
     }
@@ -140,17 +142,27 @@ if(isset($_POST['updatedata']))
 if (isset($_POST["delete"]))
  {
     $item_id=$_POST['id'];
-    include('connect.php');
+    $get_id="SELECT * from chemical_store_item where id='$item_id'";
+    $process=mysqli_query($conn,$get_id);
+    if($process->num_rows> 0)
+    {
+        while($optionData=$process->fetch_assoc()){
+        $m_id=$optionData['item_id'];
+    }
+    }
     $sql = "DELETE FROM chemical_store_item WHERE id='$item_id'";
-     $query_run = mysqli_query($conn, $sql);
+    $query_run = mysqli_query($conn, $sql);
+    $sql_main="UPDATE main_store_item  SET chemical_item =0 where id='$m_id'";
+    $sql_query = mysqli_query($conn, $sql_main);
+
     if ($query_run) {
      header("Location: chem_index.php");
     }
     else {
     echo "Error deleting record: " . $conn->error;
     }
- }
- if(isset($_POST['request']))
+}
+if(isset($_POST['request']))
  {  
     include('connect.php');
     $item_id = $_POST['item_id'];
@@ -250,5 +262,48 @@ if (isset($_POST["delete"]))
         echo '<script> alert("Data Not Saved"); </script>';
     }
 }
+if(isset($_POST['chem_out']))
+{
+    $item_id=$_POST['main_store_item_id'];
+    $quantity=$_POST['outs'];
+    $ref_no = $_POST['ref_no'];
+    $date= $_POST['date'];
+    $approved_by=$_POST['approved_by'];
+    $received_by=$_POST['received_by'];
+    $qty="SELECT * FROM chemical_store_item where item_id='$item_id'";
+    $query_r = $conn->query($qty);
+    if($query_r->num_rows> 0){
+        while($optionData=$query_r->fetch_assoc()){
+        $quant = $optionData['quantity'];
+        $uom= $optionData['uom'];
+         }}
+         $balance=(double)$quant-(double)$quantity;
+         if($balance>=0)
+         {
+     $sql="UPDATE chemical_store_item  SET quantity = '$balance' where item_id='$item_id'";
+     $query_run1=$conn->query($sql);
+     $query = "INSERT INTO chemical_store_in (`item_id`,`uom`,`balance`,`received_by`,`date`,`ref_no`,`approved_by`,`outs`)
+      VALUES ('$item_id','$uom','$balance','$received_by','$date','$ref_no','$approved_by','$quantity')";
+     $query_run = mysqli_query($conn, $query);
 
+     if($query_run)
+     {
+        ?>
+        <script>
+         alert("successfully Updated");
+         window.location="chem_index.php";
+        </script>
+        <?php
+     }
+         }
+
+         else{
+     ?>
+    <script>
+     alert("Insufficient Balance");
+     window.location="chem_index.php";
+    </script>
+    <?php
+         }
+}
 ?>
