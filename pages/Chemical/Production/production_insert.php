@@ -28,7 +28,7 @@ if ( isset( $_POST[ 'UpdateFormulation' ] ) )
 
     $update_id = $_POST[ 'id' ];
     $PRODUCT_TYPE = $_POST[ 'PRODUCT_TYPE' ];
-    $UNIT = $_POST[ 'UNIT' ];
+    // $UNIT = $_POST[ 'UNIT' ];
     $F_450 = $_POST[ 'F_450' ];
     $W_400 = $_POST[ 'W_400' ];
 
@@ -41,7 +41,7 @@ if ( isset( $_POST[ 'UpdateFormulation' ] ) )
     $CALCIUM = $_POST[ 'CALCIUM' ];
     $MAJ = $_POST[ 'MAJ' ];
 
-    $query = "UPDATE General_Formulation SET ITEM='$PRODUCT_TYPE', UNIT='$UNIT', F_450='$F_450', W_400='$W_400',GP_RESIN='$GP_RESIN',
+    $query = "UPDATE General_Formulation SET ITEM='$PRODUCT_TYPE', F_450='$F_450', W_400='$W_400',GP_RESIN='$GP_RESIN',
      N_RESIN='$N_RESIN',SP_GEL='$SP_GEL',HARDNER='$HARDNER',PIGMENT='$PIGMENT',CALCIUM='$CALCIUM',MAJ='$MAJ' WHERE ID='$update_id'";
 
     $query_run = mysqli_query( $conn, $query );

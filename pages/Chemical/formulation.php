@@ -335,10 +335,10 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                             <label> Product Type </label>
                             <input type="text" name="PRODUCT_TYPE" id="product_type" class="form-control" >
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label> Unit </label>
                             <input type="text" name="UNIT" id="unit" class="form-control" >
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <label> F_450 </label>
                             <input type="double" name="F_450" id="f_450" class="form-control" >
@@ -450,7 +450,6 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                  <tr>
                 <th scope="col">ID</th>
                 <th scope="col">ITEM</th>
-                <th scope="col"> UNIT </th>
                 <th scope="col">F_450 </th>
                 <th scope="col">W_400 </th>
                 <th scope="col"> GP_RESIN</th>
@@ -472,7 +471,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                 <tr>
                 <td> <?php echo $row['ID']; ?> </td>
                 <td> <?php echo $row['ITEM']; ?> </td>
-                <td> <?php echo $row['UNIT']; ?> </td>
+                <!-- <td> <?php echo $row['UNIT']; ?> </td> -->
                 <td> <?php echo $row['F_450']; ?> </td>
                 <td> <?php echo $row['W_400']; ?> </td>
                 <td> <?php echo $row['GP_RESIN']; ?> </td>
@@ -564,17 +563,17 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                 console.log(data);
                 $('#formulation_id').val(data[0]);
                 $('#product_type').val(data[1]);
-                $('#unit').val(data[2]);
-                $('#f_450').val(data[3]);
-                $('#w_400').val(data[4]);
-                $('#gp_resin').val(data[5]);
-                $('#n_resin ').val(data[6]);
-                $('#sp_gel').val(data[7]);
-                $('#gp_gel').val(data[8]);
-                $('#calcium').val(data[9]);
-                $('#hardner').val(data[10]);
-                $('#pigment').val(data[11]);
-                $('#maj').val(data[12]);
+                // $('#unit').val(data[2]);
+                $('#f_450').val(data[2]);
+                $('#w_400').val(data[3]);
+                $('#gp_resin').val(data[4]);
+                $('#n_resin ').val(data[5]);
+                $('#sp_gel').val(data[6]);
+                $('#gp_gel').val(data[7]);
+                $('#calcium').val(data[8]);
+                $('#hardner').val(data[9]);
+                $('#pigment').val(data[10]);
+                $('#maj').val(data[11]);
             });
         });
     </script>
