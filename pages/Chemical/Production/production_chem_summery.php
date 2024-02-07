@@ -254,7 +254,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
               <?php
                $connection = mysqli_connect("localhost", "root", "");
                $db = mysqli_select_db($connection, 'ssms');
-               $query = "SELECT * FROM summary where DEPARTEMENT='PRO'";
+               $query = "SELECT * FROM summary where DEPARTEMENT='PRO' AND id!=8";
                $query_run = mysqli_query($connection, $query);
                ?>
               <div class="card-body">

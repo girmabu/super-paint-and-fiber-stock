@@ -51,7 +51,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-out">
-        <i class="fa fa-minus-circle fa-1x"  aria-hidden="true"></i></i>out
+        <i class="fa fa-outdent" aria-hidden="true"></i>out
         </a>
       </li>
       <?php

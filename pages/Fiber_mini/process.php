@@ -120,7 +120,6 @@ if(isset($_POST['approve_mininotification']))
     }
     $query = "INSERT INTO chemical_store_in (`item_id`,`uom`,`quantity`,`received_by`,`checked_by`,`date`,`ref_no`,`balance`)
     VALUES ('$item_id','$uom','$quantity','$received_by','$checked_by','$date',`$ref_no`,`$chem_balance`)";
-
     $chem_bal ="UPDATE chemical_store_item SET quantity =$chem_balance WHERE item_id=$item_id";
     $sql="DELETE  FROM mini_notification WHERE id=$id";
     $sql_run=mysqli_query($conn, $sql);

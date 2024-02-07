@@ -406,7 +406,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
               <?php
                $connection = mysqli_connect("localhost", "root", "");
                $db = mysqli_select_db($connection, 'ssms');
-               $query = "SELECT * FROM GenChem_Balance";
+               $query = "SELECT * FROM GenChem_Balance where id!=22";
                $query_run = mysqli_query($connection, $query);
                ?>
               <div class="card-body">

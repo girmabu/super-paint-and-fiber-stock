@@ -477,27 +477,35 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                                 FROM getfiber_balance WHERE item_id='$ITEM_ID'";
                                 $result1 = $conn->query($query1);
                                 $query_run1 = mysqli_query($connection, $query1);
-                              
+                                $sp_gel = "SELECT BALANCE FROM getchem_balance WHERE ID='9'";
+                                $query_run2 = mysqli_query($connection, $sp_gel);
                                 $pigment = "SELECT BALANCE FROM getchem_balance WHERE ID='10'";
                                 $query_run3 = mysqli_query($connection, $pigment);
                                 $sp_resin = "SELECT BALANCE FROM getchem_balance WHERE ID='11'";
                                 $query_run4 = mysqli_query($connection, $sp_resin);
-                               
-                               
-                             
+                                $gp_resin = "SELECT BALANCE FROM getchem_balance WHERE ID='12'";
+                                $query_run5 = mysqli_query($connection, $gp_resin);
+                                $gp_gel = "SELECT BALANCE FROM getchem_balance WHERE ID='13'";
+                                $query_run6 = mysqli_query($connection, $gp_gel);
+                                $calcium = "SELECT BALANCE FROM getchem_balance WHERE ID='14'";
+                                $query_run7 = mysqli_query($connection, $calcium);
                                 $hardner = "SELECT BALANCE FROM getchem_balance WHERE ID='15'";
                                 $query_run8 = mysqli_query($connection, $hardner);
                                 $maj = "SELECT BALANCE FROM getchem_balance WHERE ID='16'";
                                 $query_run9 = mysqli_query($connection, $maj);
                                    // --------------------------VVVVVVVV----------------------------
-                             
+                                $SP_GEL_SUMMARY = "SELECT * FROM summary  WHERE ID='9'";
+                                $query_run12 = mysqli_query($connection, $SP_GEL_SUMMARY);
                                 $PIGMENT_SUMMARY = "SELECT * FROM summary  WHERE ID='10'";
                                 $query_run13 = mysqli_query($connection, $PIGMENT_SUMMARY);
                                 $SP_RESIN_SUMMARY = "SELECT * FROM summary  WHERE ID='11'";
                                 $query_run14 = mysqli_query($connection, $SP_RESIN_SUMMARY);
-                              
-                              
-                            
+                                $GP_RESIN_SUMMARY = "SELECT * FROM summary  WHERE ID='12'";
+                                $query_run15 = mysqli_query($connection, $GP_RESIN_SUMMARY);
+                                $GP_GEL_SUMMARY = "SELECT * FROM summary  WHERE ID='13'";
+                                $query_run16 = mysqli_query($connection, $GP_GEL_SUMMARY);
+                                $CALCIUM_SUMMARY = "SELECT * FROM summary  WHERE ID='14'";
+                                $query_run17 = mysqli_query($connection, $CALCIUM_SUMMARY);
                                 $HARDNER_SUMMARY = "SELECT * FROM summary  WHERE ID='15'";
                                 $query_run18 = mysqli_query($connection, $HARDNER_SUMMARY);
                                 $MAJ_SUMMARY = "SELECT * FROM summary  WHERE ID='16'";
@@ -516,20 +524,20 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                                         </thead>
                                         <?php
                                         foreach ($query_run as $row) foreach ($query_run1 as $row1) {
-                                        // // foreach ($query_run2 as $row2) {
-                                        // foreach ($query_run5 as $row5) {
+                                        foreach ($query_run2 as $row2) {
+                                        foreach ($query_run5 as $row5) {
                                         foreach ($query_run4 as $row4) {
-                                        // foreach ($query_run7 as $row7) {
-                                        // foreach ($query_run6 as $row6) {
+                                        foreach ($query_run7 as $row7) {
+                                        foreach ($query_run6 as $row6) {
                                         foreach ($query_run3 as $row3) {
                                         foreach ($query_run9 as $row9) {
                                         foreach ($query_run8 as $row8) {
-                                        // foreach ($query_run12 as $row12) {
+                                        foreach ($query_run12 as $row12) {
                                         foreach ($query_run13 as $row13) {
                                         foreach ($query_run14 as $row14) {
-                                        // foreach ($query_run15 as $row15) {
-                                        // foreach ($query_run16 as $row16) {
-                                        // foreach ($query_run17 as $row17) {
+                                        foreach ($query_run15 as $row15) {
+                                        foreach ($query_run16 as $row16) {
+                                        foreach ($query_run17 as $row17) {
                                         foreach ($query_run18 as $row18) {
                                         foreach ($query_run19 as $row19) {
                                                                                                               
@@ -564,12 +572,17 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                                                                                                                 $mbk = $row9['BALANCE'];
                                                                                                                 $pigment_x_batch = (double)$row['PIGMENT'] *(double)$BATCH;
                                                                                                                 $pbk = $row3['BALANCE'];
-                                                                                                               
-                                                                                                               
-                                                                                                             
+                                                                                                                $calcium_x_batch = (double)$row['CALCIUM'] *(double) $BATCH;
+                                                                                                                $cbk = $row7['BALANCE'];
+                                                                                                                $gp_gel_x_batch = (double)$row['GP_GEL'] * (double)$BATCH;
+                                                                                                                $gpbk = $row6['BALANCE'];
+                                                                                                                $sp_gel_x_batch = (double)$row['SP_GEL'] * $BATCH;
+                                                                                                                $spbk = $row2['BALANCE'];
                                                                                                                 $n_resin_x_batch = (double)$row['N_RESIN'] *(double) $BATCH;
                                                                                                                 $nrbk = $row4['BALANCE'];  
-                                                                                                           
+                                                                                                                $gp_resin_x_batch = (double)$row['GP_RESIN'] *(double) $BATCH;
+                                                                                                                $gprbk = $row5['BALANCE'];
+                                                                                                        
                                                                                                                 $f_450 = $row['F_450'];
                                                                                                                 $f_450_x_batch = (double)$row['F_450'] *(double) $BATCH;
                                                                                                                 $fbk = $row1['FIBER_BALANCE_KG'];
@@ -578,8 +591,8 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                                                                                                                 $f_t_pc = (double)$FBP - (double)$BATCH;
                                                                                                                 $F_OUT = $BATCH;
                                                                                                                
-                                                                                                                if ($f_450_x_batch > $fbk || $n_resin_x_batch > $nrbk
-                                                                                                                || $pigment_x_batch > $pbk || 
+                                                                                                                if ($f_450_x_batch > $fbk || $gp_resin_x_batch > $gprbk || $n_resin_x_batch > $nrbk
+                                                                                                                ||$sp_gel_x_batch > $spbk|| $gp_gel_x_batch > $gpbk||$calcium_x_batch > $cbk || $pigment_x_batch > $pbk || 
                                                                                                                 $maj_x_batch > $mbk ||$hardner_x_batch >$hbk||$w_400_x_batch>$wbk )  {
                                                                                                                     //=----------------------F_450-------------------------
                                                                                                                         $F_OUT = 0;
@@ -591,7 +604,16 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
 
                                                                                                                       //=----------------------F_450-------------------------
                                                                                                                 
+                                                                                                                    //    -----------------GP_RESIN----------------
+                                                                                                                   $GP_RESIN_ITEM = "GP_RESIN";
+                                                                                                                   $gp_resin = $row['GP_RESIN'];
                                                                                                                    
+                                                                                                                   $gprbk = $row5['BALANCE'];
+                                                                                                                   $gp_resin_x_batch = 0;
+                                                                                                                   $TOTAL_BALANCE3 = $gprbk;
+                                                                                                                   $gp_resin_query = "UPDATE getchem_balance SET BALANCE = '$TOTAL_BALANCE3' WHERE id='12'";
+                                                                                                                   $query_run1 = mysqli_query($conn, $gp_resin_query);
+                                                                                                                //    ---------------GP_RESIN-------------------
                                                                                                             
                                                                                                                     $H_ITEM = "HARDNER";
                                                                                                                     $hardner_x_batch = 0;
@@ -622,8 +644,33 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                                                                                                                  $query_run1 = mysqli_query($conn, $pigment_query);
 
                                                                                                                 // -------------------pigment-------------
-                                          
-                                                                                                            
+                                                                                                                //   ----------------------CALCIUM-------------
+                                                                                                                $calcium = $row['CALCIUM'];
+                                                                                                                $C_ITEM = "CALCIUM";
+                                                                                                                $calcium_x_batch = 0;
+                                                                                                                $cbk=$row7['BALANCE'];
+                                                                                                                $TOTAL_BALANCE7=$cbk ;
+
+                                                                                                                $calcium_query = "UPDATE getchem_balance SET BALANCE = '$TOTAL_BALANCE7' WHERE id='14'";
+                                                                                                                $query_run1 = mysqli_query($conn, $calcium_query);
+                                                                                                                //   ----------------------CALCIUM-------------
+                                                                                                                // -------------------gp_gel-------------------
+                                                                                                                $gp_gel = $row['GP_GEL'];
+                                                                                                                $GEL_ITEM = "GP_GEL";
+                                                                                                                $gp_gel_x_batch = 0;
+                                                                                                                $gpbk = $row6['BALANCE'];
+                                                                                                                $TOTAL_BALANCE6 = $gpbk;
+
+                                                                                                                $gp_gel_query = "UPDATE getchem_balance SET BALANCE = '$TOTAL_BALANCE6' WHERE id='13'";
+                                                                                                                $query_run1 = mysqli_query($conn, $gp_gel_query);
+                                                                                                                // -------------------gp_gel-------------------
+                                                                                                                // ---------------------sp_gel-------------------
+                                                                                                                $sp_gel = $row['SP_GEL'];
+                                                                                                                $SP_GEL_ITEM = "SP_GEL";
+                                                                                                                $sp_gel_x_batch =0;
+                                                                                                                $spbk = $row2['BALANCE'];
+                                                                                                                $TOTAL_BALANCE5 = $spbk;
+                                                                                                                // ------------------------sp_gel------------------
                                                                                                                 // --------------------N_RESIN------------------------
                                                                                                                 $N_ITEM = "N_RESIN";
                                                                                                                 $n_resin = $row['N_RESIN'];
@@ -674,8 +721,8 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
 
                                                                                                             
 
-                                                                                                                else if ($f_450_x_batch <= $fbk || $w_400_x_batch <= $wbk || $n_resin_x_batch <= $nrbk
-                                                                                                                || $pigment_x_batch <= $pbk ||$maj_x_batch <= $mbk 
+                                                                                                                else if ($f_450_x_batch <= $fbk || $w_400_x_batch <= $wbk || $gp_resin_x_batch <= $gprbk || $n_resin_x_batch <= $nrbk
+                                                                                                                ||$sp_gel_x_batch <= $spbk|| $gp_gel_x_batch <= $gpbk||$calcium_x_batch <= $cbk || $pigment_x_batch <= $pbk ||$maj_x_batch <= $mbk 
                                                                                                                 ||$hardner_x_batch <= $hbk ) {{
                                                                                                                     //-------------F_450--------------------------------
                                                                                                                     $F_ITEM = "F_450";
@@ -891,40 +938,162 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                                                                                                                    
                                                                                                                 $query_run123 = mysqli_query($conn, $pigment_query1);
                                                                                                                      // ---------------PIGMENT-----------------
-                                                                                                                     $R_DATE_ALL = "SELECT R_DATE FROM dailysummary WHERE DEPARTEMENT='GET'";
-                                                                                                                     $result = $conn->query($R_DATE_ALL);
-                                                                                                                     while ($optionData = $result->fetch_assoc()) {
-                                                
-                                                                                                                      $RDATE = $optionData['R_DATE']; 
-                                                                                                                      // echo $RDATE;
-                                                                                                                     }
-                                                                                                                     if($DATE!==$RDATE) {
-
-                                                                                                                      $daily_summery="SELECT * FROM summary WHERE DEPARTEMENT='GET'";
-                                                                                                                      $query_summery = mysqli_query($conn, $daily_summery);
-                                                                                                                      while ($optionData = $query_summery->fetch_assoc()) {
-                                                                                                                          $ID=$optionData['ID'];
-                                                                                                                          $RDATE = $optionData['R_DATE'];
-                                                                                                                         $ITEM=$optionData['ITEM'];
-                                                                                                                         $UOM=$optionData['UOM'];
-                                                                                                                         $DEPARTEMENT=$optionData['DEPARTEMENT'];
-                                                                                                                         $STOCK_IN=$optionData['STOCK_IN'];
-                                                                                                                         $STOCK_OUT=$optionData['STOCK_OUT'];
-                                                                                                                         $P_BALANCE=$optionData['P_BALANCE'];
-                                                                                                                         $PREFIX=$optionData['PREFIX'];
-                                                                                                                         $Daily_Balance_History = " INSERT INTO dailysummary (ID,R_DATE,ITEM,UOM,DEPARTEMENT,STOCK_IN,STOCK_OUT,P_BALANCE,PREFIX) 
-                                                                                                                         VALUES ('$ID','$RDATE','$ITEM','$UOM','$DEPARTEMENT','$STOCK_IN','$STOCK_OUT','$P_BALANCE','$PREFIX')";
-                                                                                                                           
-                                                                                                                         $query_run7 = mysqli_query($conn, $Daily_Balance_History);
-                                                                    
-                                                                    
-                                                                    
-                                                                                                                    // $Daily_Balance_History =" INSERT INTO dailysummary SELECT * FROM summary WHERE DEPARTEMENT='GEN'";
-                                                                                                                    // $query_run7 = mysqli_query($conn, $Daily_Balance_History);
+                                                                                                                    //  -----------------CALCIUM------------------
+                                                                                                                $calcium = $row['CALCIUM'];
+                                                                                                                $C_ITEM = "CALCIUM";
+                                                                                                                $calcium_x_batch = (double)$row['CALCIUM'] *(double) $BATCH;
+                                                                                                                $cbk = $row7['BALANCE'];
+                                                                                                                $TOTAL_BALANCE7 = (double)$cbk - (double)$calcium_x_batch;
+                                                                                                                $calcium_query = "UPDATE getchem_balance SET BALANCE = '$TOTAL_BALANCE7' WHERE id='14'";
+                                                                                                                $query_run1 = mysqli_query($conn, $calcium_query);
+                                                                                                                $OUT_DATE = $row17['R_DATE'];
+                                                                                                                $OUT_BALANCE = $row17['STOCK_OUT'];
+                                                                                                                $IN_BALANCE = $row17['STOCK_IN'];
+                                                                                                                if ($DATE !== $OUT_DATE) {
+                                                                                                                    $OUT_BALANCE = 0;
+                                                                                                                    $IN_BALANCE = 0;
+                                                                                                                    $S_BALANCE =(double) $OUT_BALANCE + (double)$calcium_x_batch;
                                                                                                                 }
-                                                                                                              
-                                                                                                            } 
-                                                                                                         
+                                                                                                                if ($DATE == $OUT_DATE) {
+                                                                                                                    $S_BALANCE =(double) $OUT_BALANCE +(double) $calcium_x_batch;
+                                                                                                                    $IN_BALANCE;
+                                                                                                                }
+                                                                                                                $calcium_query = "UPDATE summary SET STOCK_OUT ='$S_BALANCE',STOCK_IN ='$IN_BALANCE' ,R_DATE='$DATE', P_BALANCE = '$TOTAL_BALANCE7'  WHERE id='14'";
+                                                                                                                $query_run12 = mysqli_query($conn, $calcium_query);
+                                                                                                                $OUT_BALANCE = "INSERT INTO pro_sp_gel_out(ITEM,DEPARTEMENT,UOM,STOCK_IN, STOCK_OUT,P_BALANCE,RECIVED_BY,RECIVED_DATE,REMARK)  
+                                                                                                             VALUES ('$C_ITEM','$DEPARTMENT' ,'$UOM','$stock_in','$calcium_x_batch', '$TOTAL_BALANCE7', '$NAME','$DATE','$REMARK')";
+                                                                                                                $query_run = mysqli_query($conn, $OUT_BALANCE);
+
+                                                                                                                $calcium_query1 = "UPDATE dailysummary SET STOCK_OUT ='$S_BALANCE',STOCK_IN ='$IN_BALANCE' , P_BALANCE = '$TOTAL_BALANCE7'  WHERE id='14' AND R_DATE ='$DATE' ";
+                                                                                                                   
+                                                                                                                $query_run123 = mysqli_query($conn, $calcium_query1);
+                                                                                                                    //  -----------------CALCIUM------------------
+                                                                                                                    // -------------------gp_gel--------------------
+                                                                                                                    $gp_gel = $row['GP_GEL'];
+                                                                                                                    $GEL_ITEM = "GP_GEL";
+                                                                                                                    $gp_gel_x_batch = (double)$row['GP_GEL'] *(double) $BATCH;
+                                                                                                                    $gpbk = $row6['BALANCE'];
+                                                                                                                    $TOTAL_BALANCE6 = (double)$gpbk -(double) $gp_gel_x_batch;
+    
+                                                                                                                    $gp_gel_query = "UPDATE getchem_balance SET BALANCE = '$TOTAL_BALANCE6' WHERE id='13'";
+                                                                                                                    $query_run1 = mysqli_query($conn, $gp_gel_query);
+    
+                                                                                                                    $OUT_DATE = $row16['R_DATE'];
+                                                                                                                    $OUT_BALANCE = $row16['STOCK_OUT'];
+                                                                                                                    $IN_BALANCE = $row16['STOCK_IN'];
+    
+                                                                                                                    if ($DATE !== $OUT_DATE) {
+                                                                                                                        $OUT_BALANCE = 0;
+                                                                                                                        $IN_BALANCE = 0;
+                                                                                                                        $S_BALANCE = (double)$OUT_BALANCE +(double) $gp_gel_x_batch;
+                                                                                                                    }
+                                                                                                                    if ($DATE == $OUT_DATE) {
+                                                                                                                        $S_BALANCE = (double)$OUT_BALANCE +(double) $gp_gel_x_batch;
+                                                                                                                        $IN_BALANCE;
+                                                                                                                    }
+                                                                                                                    $gp_gel_query = "UPDATE summary SET STOCK_OUT ='$S_BALANCE',STOCK_IN ='$IN_BALANCE' ,R_DATE='$DATE', P_BALANCE = '$TOTAL_BALANCE6'  WHERE id='13'";
+                                                                                                                    $query_run12 = mysqli_query($conn, $gp_gel_query);
+                                                                                                                    $OUT_BALANCE = "INSERT INTO pro_sp_gel_out(ITEM,DEPARTEMENT,UOM,STOCK_IN, STOCK_OUT,P_BALANCE,RECIVED_BY,RECIVED_DATE,REMARK)  
+                                                                                                                   VALUES ('$GEL_ITEM','$DEPARTMENT' ,'$UOM','$stock_in','$gp_gel_x_batch', '$TOTAL_BALANCE6', '$NAME','$DATE',' $REMARK')";
+                                                                                                                    $query_run = mysqli_query($conn, $OUT_BALANCE);
+
+                                                                                                                    $gp_gel_query1 = "UPDATE dailysummary SET STOCK_OUT ='$S_BALANCE',STOCK_IN ='$IN_BALANCE' , P_BALANCE = '$TOTAL_BALANCE6'  WHERE id='13' AND R_DATE ='$DATE' ";
+                                                                                                                    $query_run123 = mysqli_query($conn, $gp_gel_query1);
+                                                                                                                    // ----------------gp_gel-----------------------
+                                                                                                                    // ------------------SP_GEL-----------------------
+                                                                                                                    $sp_gel = $row['SP_GEL'];
+                                                                                                                    $SP_GEL_ITEM = "SP_GEL";
+                                                                                                                    $sp_gel_x_batch =(double) $row['SP_GEL'] * (double)$BATCH;
+                                                                                                                    $spbk = $row2['BALANCE'];
+                                                                                                                    $TOTAL_BALANCE5 =(double) $spbk - (double)$sp_gel_x_batch;
+    
+                                                                                                                    $sp_gel_query = "UPDATE getchem_balance SET BALANCE = '$TOTAL_BALANCE5' WHERE id='9'";
+                                                                                                                    $query_run1 = mysqli_query($conn, $sp_gel_query);
+                                                                                                                    $OUT_DATE = $row12['R_DATE'];
+                                                                                                                    $OUT_BALANCE = $row12['STOCK_OUT'];
+                                                                                                                    $IN_BALANCE = $row12['STOCK_IN'];
+    
+                                                                                                                    if ($DATE !== $OUT_DATE) {
+                                                                                                                        $OUT_BALANCE = 0;
+                                                                                                                        $IN_BALANCE = 0;
+                                                                                                                        $S_BALANCE = (double)$OUT_BALANCE +(double) $sp_gel_x_batch;
+                                                                                                                    }
+                                                                                                                    if ($DATE == $OUT_DATE) {
+                                                                                                                        $S_BALANCE = (double)$OUT_BALANCE +(double) $sp_gel_x_batch;
+                                                                                                                        $IN_BALANCE;
+                                                                                                                    }
+                                                                                                                    $sp_gel_query = "UPDATE summary SET STOCK_OUT ='$S_BALANCE',STOCK_IN ='$IN_BALANCE' 
+                                                                                                                   ,R_DATE='$DATE', P_BALANCE = '$TOTAL_BALANCE5'  WHERE id='9'";
+                                                                                                                    $query_run12 = mysqli_query($conn, $sp_gel_query);
+    
+                                                                                                                    $OUT_BALANCE = "INSERT INTO pro_sp_gel_out(ITEM,DEPARTEMENT,UOM,STOCK_IN, STOCK_OUT,P_BALANCE,RECIVED_BY,RECIVED_DATE,REMARK)  
+                                                                                                                    VALUES ('$SP_GEL_ITEM' ,'$DEPARTMENT','$UOM','$stock_in','$sp_gel_x_batch', '$TOTAL_BALANCE5', '$NAME','$DATE','$REMARK')";
+                                                                                                                    $query_run = mysqli_query($conn, $OUT_BALANCE);
+
+
+                                                                                                                    $sp_gel_query1 = "UPDATE dailysummary SET STOCK_OUT ='$S_BALANCE',STOCK_IN ='$IN_BALANCE' , P_BALANCE = '$TOTAL_BALANCE5'  WHERE id='9' AND R_DATE ='$DATE' ";
+                                                                                                                   
+                                                                                                                     $query_run123 = mysqli_query($conn, $sp_gel_query1);
+
+                                                                                                                    // -----------------SP_GEL------------------------
+
+                                                                                                                    // -------------GP_RESIN---------------------------
+                                                                                                                    $GP_RESIN_ITEM = "GP_RESIN";
+                                                                                                                    $gp_resin = $row['GP_RESIN'];
+                                                                                                                    
+                                                                                                                    $gprbk = $row5['BALANCE'];
+                                                                                                                    $gp_resin_x_batch = (double)$row['GP_RESIN'] *(double) $BATCH;
+                                                                                                                    $TOTAL_BALANCE3 = (double)$gprbk - (double)$gp_resin_x_batch;
+                                                                                                                    $gp_resin_query = "UPDATE getchem_balance SET BALANCE = '$TOTAL_BALANCE3' WHERE id='12'";
+                                                                                                                    $query_run1 = mysqli_query($conn, $gp_resin_query);
+                                                                                                                  
+                                                                                                                    $OUT_DATE = $row15['R_DATE'];
+                                                                                                                    $OUT_BALANCE = $row15['STOCK_OUT'];
+                                                                                                                    $IN_BALANCE = $row15['STOCK_IN'];
+    
+                                                                                                                    if ($DATE == $OUT_DATE) {
+                                                                                                                        $S_BALANCE =(double) $OUT_BALANCE +(double) $gp_resin_x_batch;
+                                                                                                                        $IN_BALANCE;
+                                                                                                                    }
+                                                                                                                    if ($DATE !== $OUT_DATE) {
+                                                                                                                        $OUT_BALANCE = 0;
+                                                                                                                        $IN_BALANCE = 0;
+                                                                                                                        $S_BALANCE = (double)$OUT_BALANCE +(double) $gp_resin_x_batch;
+                                                                                                                    }
+                                                                                                                    $gp_resin_query = "UPDATE summary SET STOCK_OUT ='$S_BALANCE',STOCK_IN ='$IN_BALANCE'
+                                                                                                                      ,R_DATE='$DATE', P_BALANCE = '$TOTAL_BALANCE3'  WHERE id='12'";
+                                                                                                                    $query_run1 = mysqli_query($conn, $gp_resin_query);
+                                                                                                                    $OUT_BALANCE = "INSERT INTO pro_sp_gel_out(ITEM,DEPARTEMENT,UOM,STOCK_IN, STOCK_OUT,P_BALANCE,RECIVED_BY,RECIVED_DATE,REMARK)  
+                                                                                                                    VALUES ('$GP_RESIN_ITEM','$DEPARTMENT' ,'$UOM','$stock_in','$gp_resin_x_batch', '$TOTAL_BALANCE3', '$NAME','$DATE','$REMARK')";
+                                                                                                                    $query_run = mysqli_query($conn, $OUT_BALANCE);
+
+
+
+
+                                                                                                                    $gp_resin_query1 = "UPDATE dailysummary SET STOCK_OUT ='$S_BALANCE' ,STOCK_IN ='$IN_BALANCE', P_BALANCE = '$TOTAL_BALANCE3'  WHERE id='12' AND R_DATE ='$DATE' ";
+                                                                                                                    $query_run123 = mysqli_query($conn, $gp_resin_query1);
+
+                                                                                                                    $R_DATE_ALL = "SELECT R_DATE FROM dailysummary WHERE DEPARTEMENT='GET' ";
+                                                                                                                    $result = $conn->query($R_DATE_ALL);
+
+                                                                                                                    while ($optionData = $result->fetch_assoc()) {
+                                                                                                                        
+                                                                                                                        $RDATE = $optionData['R_DATE']; 
+                                                                                                                        // echo $RDATE;
+                                                                                                                    }
+
+                                                                                                                   
+                                                                                                                        if($DATE!==$RDATE) {
+                                                                                                                        $Daily_Balance_History =" INSERT INTO dailysummary SELECT * FROM summary WHERE DEPARTEMENT='GET'";
+                                                                                                                        $query_run7 = mysqli_query($conn, $Daily_Balance_History);
+                                                                                                                    }
+                                                                                                                    if($DATE==$RDATE) {
+                                                                                                                      
+                                                                                                          
+                                                                                                                    }
+                                                                                                                    // --------------GP_RESIN---------------------------
+
+
 
                                                
                                                                                                                 } 
@@ -1018,7 +1187,20 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                                                                                                                                                                                                         }
                                                                                                                                                                                                         ?></td>
                                                                                                                                                                                                 </tr>
-                                                                                                                                                                                          
+                                                                                                                                                                                                <tr>
+                                                                                                                                                                                                    <td>GP_RESIN</td>
+                                                                                                                                                                                                    <td> <?php echo $gp_resin ?> </td>
+                                                                                                                                                                                                    <td> <?php echo $gp_resin_x_batch ?> </td>
+                                                                                                                                                                                                    <td> <?php echo $TOTAL_BALANCE3 ?></td>
+                                                                                                                                                                                                    <td>
+                                                                                                                                                                                                        <?php
+                                                                                                                                                                                                        if ($TOTAL_BALANCE3 < 0) {
+                                                                                                                                                                                                            echo "<font color=red>insufficent stock balance</font>";
+                                                                                                                                                                                                        } else {
+                                                                                                                                                                                                            echo "<font color=green>stock is sufficent</font>";
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                        ?></td>
+                                                                                                                                                                                                </tr>
                                                                                                                                                                                                 <tr>
                                                                                                                                                                                                     <td>N_RESIN</td>
                                                                                                                                                                                                     <td> <?php echo $n_resin ?> </td>
@@ -1033,9 +1215,48 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                                                                                                                                                                                                         }
                                                                                                                                                                                                         ?></td>
                                                                                                                                                                                                 </tr>
-                                                                                                                                                                                               
-                                                                                                                                                                                           
-                                                                                                                                                                                             
+                                                                                                                                                                                                <tr>
+                                                                                                                                                                                                    <td>SP_GEL</td>
+                                                                                                                                                                                                    <td> <?php echo $sp_gel ?> </td>
+                                                                                                                                                                                                    <td> <?php echo $sp_gel_x_batch ?> </td>
+                                                                                                                                                                                                    <td> <?php echo $TOTAL_BALANCE5 ?></td>
+                                                                                                                                                                                                    <td>
+                                                                                                                                                                                                        <?php
+                                                                                                                                                                                                        if ($TOTAL_BALANCE5 < 0) {
+                                                                                                                                                                                                            echo "<font color=red>insufficent stock balance</font>";
+                                                                                                                                                                                                        } else {
+                                                                                                                                                                                                            echo "<font color=green>stock is sufficent</font>";
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                        ?></td>
+                                                                                                                                                                                                </tr>
+                                                                                                                                                                                                <tr>
+                                                                                                                                                                                                    <td>GP_GEL</td>
+                                                                                                                                                                                                    <td> <?php echo $gp_gel ?> </td>
+                                                                                                                                                                                                    <td> <?php echo $gp_gel_x_batch ?> </td>
+                                                                                                                                                                                                    <td> <?php echo $TOTAL_BALANCE6 ?></td>
+                                                                                                                                                                                                    <td>
+                                                                                                                                                                                                        <?php
+                                                                                                                                                                                                        if ($TOTAL_BALANCE6 < 0) {
+                                                                                                                                                                                                            echo "<font color=red>insufficent stock balance</font>";
+                                                                                                                                                                                                        } else {
+                                                                                                                                                                                                            echo "<font color=green>stock is sufficent</font>";
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                        ?></td>
+                                                                                                                                                                                                </tr>
+                                                                                                                                                                                                <tr>
+                                                                                                                                                                                                    <td>CALCIUM</td>
+                                                                                                                                                                                                    <td> <?php echo $calcium ?> </td>
+                                                                                                                                                                                                    <td> <?php echo $calcium_x_batch ?> </td>
+                                                                                                                                                                                                    <td> <?php echo $TOTAL_BALANCE7 ?></td>
+                                                                                                                                                                                                    <td>
+                                                                                                                                                                                                        <?php
+                                                                                                                                                                                                        if ($TOTAL_BALANCE7 < 0) {
+                                                                                                                                                                                                            echo "<font color=red>insufficent stock balance</font>";
+                                                                                                                                                                                                        } else {
+                                                                                                                                                                                                            echo "<font color=green>stock is sufficent</font>";
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                        ?></td>
+                                                                                                                                                                                                </tr>
                                                                                                                                                                                                 <tr>
                                                                                                                                                                                                     <td>PIGMENT</td>
                                                                                                                                                                                                     <td> <?php echo $pigment ?> </td>
@@ -1113,14 +1334,14 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                                                                                         }
                                                                                     }
                                                                                 }
-                                                                            // }
-                                                                        // }
-                                                                    // }
-                                                                // }
-                                                            // }
-                                                        // }
-                                                    // }
-                                                // }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }}else {
                             }

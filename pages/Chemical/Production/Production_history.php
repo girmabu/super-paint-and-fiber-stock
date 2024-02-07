@@ -267,7 +267,6 @@
                    <th scope="col"> Out</th>
                    <th scope="col"> Balance</th>
                    <th scope="col"> Date</th>
-                   <!-- <th scope="col"> WOVEN_BALANCE_PCS</th> -->
                    <th scope="col"> In/Out_by </th>
                    <th scope="col"> Remark </th>
                   </tr>

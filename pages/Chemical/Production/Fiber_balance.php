@@ -49,7 +49,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         </a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="Production_fiber_history.php" class="nav-link">
+        <a href="Production_history.php" class="nav-link">
         <i class="fas fa-anchor"></i>Summery
         </a>
       </li>

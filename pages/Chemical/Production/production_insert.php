@@ -47,7 +47,7 @@ if ( isset( $_POST[ 'UpdateFormulation' ] ) )
     $query_run = mysqli_query( $conn, $query );
 
     if ( $query_run )
- {
+    {
         echo '<script> alert("Data Updated"); </script>';
         header( 'Location:production_formulation.php' );
     } else {
@@ -471,10 +471,253 @@ if ( isset( $_POST[ 'updatedata' ] ) )
     $query_run = mysqli_query( $conn, $query );
 
     if ( $query_run )
- {
+    {
         echo '<script> alert("Data Updated"); </script>';
         header( 'Location:Chemical_balance.php' );
     } else {
         echo '<script> alert("Data Not Updated"); </script>';
+    }
+}
+if ( isset( $_POST['other_out'] ) )
+{
+
+    $to = $_POST[ 'to' ];
+    $quantity=$_POST['STOCK_IN'];
+    $RECIVED_BY=$_POST['RECIVED_BY'];
+    $date=$_POST['RECIVED_DATE'];
+    $item_id=$_POST['ITEM_ID'];
+    $pro_dep="PRO";
+    $gen_dep="GEN";
+    $get_dep="GET";
+    $uom="kg";
+    $remark="በዉሰት የወጣ ኬሚካል";
+    $prod_query="SELECT * FROM prochem_balance where ID='$item_id'";
+    $query_pro=mysqli_query($conn,$prod_query);
+    while ($optionData = $query_pro->fetch_assoc() ) {
+        $name=$optionData['ITEM'];
+        $pro_balance=$optionData['BALANCE'];
+    }
+    if($to){
+    if((double)$pro_balance >= (double)$quantity)
+    {
+        $stock_in=0;
+        $stock_out=0;
+        $pro_chem_balance= (double)$pro_balance-(double)$quantity;
+        $query = "UPDATE prochem_balance SET BALANCE='$pro_chem_balance' WHERE ID='$item_id'";
+        $query_run2 = mysqli_query( $conn, $query );
+
+        $OUT_BALANCE = "INSERT INTO pro_sp_gel_out(ITEM,DEPARTEMENT,UOM,STOCK_IN, STOCK_OUT,P_BALANCE,RECIVED_BY,RECIVED_DATE,REMARK)  
+        VALUES ('$name','$pro_dep' ,'$uom','$stock_in','$quantity', '$pro_chem_balance', '$RECIVED_BY','$date','$remark')";
+        $query_run123 = mysqli_query($conn, $OUT_BALANCE);
+
+        $query="SELECT * FROM summary where DEPARTEMENT='PRO' AND ID='$item_id'";
+        $result=mysqli_query($conn,$query);
+        while ($optionData=$result->fetch_assoc() ) {
+            $db_date=$optionData['R_DATE'];
+            $balance=$optionData['P_BALANCE'];
+            $in=$optionData['STOCK_IN'];
+            $out=$optionData['STOCK_OUT'];
+        }
+       if($db_date==$date)
+       { 
+        $out_balance=(double)$out+(double)$quantity;
+        $total=(double)$balance+(double)$stock_in-(double)$quantity;
+        $query = "UPDATE summary SET P_BALANCE='$total',STOCK_OUT='$out_balance' WHERE ID='$item_id'";
+        $query_run0 = mysqli_query( $conn, $query );
+
+
+        $query21 = "UPDATE dailysummary SET P_BALANCE='$total',STOCK_OUT='$out_balance' WHERE DEPARTEMENT='PRO' AND ITEM='$name'";
+        $query_run= mysqli_query( $conn, $query21 );
+        if($query_run0)
+        {
+        ?>
+        <script>
+             alert("Updated Successfully");
+             window.location="chemical_balance.php";
+        </script>
+        <?php
+       } 
+        }
+       else if($db_date!=$date)
+       {
+        $total=(double)$balance-(double)$quantity;
+        $query = "UPDATE summary SET P_BALANCE='$total',STOCK_OUT='$quantity',R_DATE='$date' WHERE ID='$item_id'";
+        $query_run3 = mysqli_query( $conn, $query );
+        
+        if($query_run3)
+        {
+        ?>
+        <script>
+             alert("Updated Successfully");
+             window.location="chemical_balance.php";
+        </script>
+        <?php
+       } 
+       else{
+        ?>
+        <script>
+             alert("Some Thing Wrong");
+             window.location="chemical_balance.php";
+        </script>
+        <?php
+       }
+        }
+       } 
+          
+        if($query_run2)
+        {
+         if($to==1)
+          {
+            $gen_query="SELECT * FROM genchem_balance where ITEM='$name'";
+            $query_gen=mysqli_query($conn,$gen_query);
+            while ($gen_data=$query_gen->fetch_assoc() ) {
+                $gen_balance=$gen_data['BALANCE'];
+            }
+
+
+            $query="SELECT * FROM summary where DEPARTEMENT='GEN' AND ITEM='$name'";
+            $result=mysqli_query($conn,$query);
+            while ($optionData=$result->fetch_assoc() ) {
+                $db_date=$optionData['R_DATE'];
+                $balance=$optionData['P_BALANCE'];
+                $in=$optionData['STOCK_IN'];
+                $out=$optionData['STOCK_OUT'];
+            }
+
+            if($db_date==$date)
+            { 
+             $out_balance=(double)$out+(double)$quantity;
+             $total=(double)$balance+(double)$quantity;
+             $query = "UPDATE summary SET P_BALANCE='$total',STOCK_IN='$out_balance' WHERE DEPARTEMENT='GEN' AND ITEM='$name'";
+             $query_run0 = mysqli_query( $conn, $query );
+
+             $query21 = "UPDATE dailysummary SET P_BALANCE='$total',STOCK_IN='$out_balance' WHERE DEPARTEMENT='GEN' AND ITEM='$name'";
+             $query_run= mysqli_query( $conn, $query21 );
+             if($query_run0)
+             {
+             ?>
+             <script>
+                  alert("Updated Successfully");
+                  window.location="chemical_balance.php";
+             </script>
+             <?php
+            } 
+             }
+             else if($db_date!=$date)
+             {
+              $total=(double)$balance+(double)$quantity;
+              $query = "UPDATE summary SET P_BALANCE='$total',STOCK_IN='$quantity',R_DATE='$date' WHERE DEPARTEMENT='GEN' AND ITEM='$name'";
+              $query_run3 = mysqli_query( $conn, $query );
+              
+              $Daily_Balance_History = " INSERT INTO dailysummary (ID,R_DATE,ITEM,UOM,DEPARTEMENT,STOCK_IN,STOCK_OUT,P_BALANCE) 
+              VALUES ('$item_id','$date','$name','$uom','$gen_dep','$quantity','$stock_out','$total')";
+              $query_ru = mysqli_query( $conn, $Daily_Balance_History );
+
+              if($query_run3)
+              {
+              ?>
+              <script>
+                   alert("Updated Successfully");
+                   window.location="chemical_balance.php";
+              </script>
+              <?php
+             } 
+              }
+           $genda_balance= (double)$gen_balance+(double)$quantity;
+           $query1 = "UPDATE genchem_balance SET BALANCE='$genda_balance' where ITEM='$name'";
+           $query_run2 = mysqli_query( $conn, $query1 );
+           $OUT_BALANCE = "INSERT INTO pro_sp_gel_out(ITEM,DEPARTEMENT,UOM,STOCK_IN, STOCK_OUT,P_BALANCE,RECIVED_BY,RECIVED_DATE,REMARK)  
+           VALUES ('$name','$gen_dep' ,'$uom','$quantity','$stock_out', '$genda_balance', '$RECIVED_BY','$date','$remark')";
+           $query_run123 = mysqli_query($conn, $OUT_BALANCE);
+           if($query_run2)
+           {
+            ?>
+            <script>
+             alert("Balance Updated Successfully");
+             window.location="chemical_balance.php";
+            </script>
+            <?php
+            }
+          }
+          if($to==2)
+          {
+            $get_query="SELECT * FROM getchem_balance where ITEM='$name'";
+            $query_get=mysqli_query($conn,$get_query);
+            while ($get_data=$query_get->fetch_assoc() ) {
+                $get_balance=$get_data['BALANCE'];
+            }
+           $getema_balance= (double)$get_balance+(double)$quantity;
+           $query21 = "UPDATE getchem_balance SET BALANCE='$getema_balance' where ITEM='$name'";
+           $query_run2 = mysqli_query( $conn, $query21 );
+           $OUT_BALANCE1 = "INSERT INTO pro_sp_gel_out(ITEM,DEPARTEMENT,UOM,STOCK_IN, STOCK_OUT,P_BALANCE,RECIVED_BY,RECIVED_DATE,REMARK)  
+           VALUES ('$name','$get_dep' ,'$uom','$quantity','$stock_out','$getema_balance', '$RECIVED_BY','$date','$remark')";
+           $query_run13 = mysqli_query($conn, $OUT_BALANCE1);
+            //This code is used to execute summery
+            $query="SELECT * FROM summary where DEPARTEMENT='GET' AND ITEM='$name'";
+            $result=mysqli_query($conn,$query);
+            while ($optionData=$result->fetch_assoc() ) {
+                $db_date=$optionData['R_DATE'];
+                $balance=$optionData['P_BALANCE'];
+                $in=$optionData['STOCK_IN'];
+                $out=$optionData['STOCK_OUT'];
+            }
+
+            if($db_date==$date)
+            { 
+             $out_balance=(double)$out+(double)$quantity;
+             $total=(double)$balance+(double)$stock_in+(double)$quantity;
+             $query = "UPDATE summary SET P_BALANCE='$total',STOCK_IN='$out_balance' WHERE DEPARTEMENT='GET' AND ITEM='$name'";
+             $query_run0 = mysqli_query( $conn, $query );
+
+             $query21 = "UPDATE dailysummary SET P_BALANCE='$total',STOCK_IN='$out_balance' WHERE DEPARTEMENT='GET' AND ITEM='$name'";
+             $query_run= mysqli_query( $conn, $query21 );
+             if($query_run0)
+             {
+             ?>
+             <script>
+                  alert("Updated Successfully");
+                  window.location="chemical_balance.php";
+             </script>
+             <?php
+            } 
+             }
+             else if($db_date!=$date)
+             {
+              $total=(double)$balance+(double)$quantity;
+              $query = "UPDATE summary SET P_BALANCE='$total',STOCK_IN='$quantity',R_DATE='$date' WHERE DEPARTEMENT='GET' AND ITEM='$name'";
+              $query_run3 = mysqli_query( $conn, $query );
+                
+              $Daily_Balance_History = " INSERT INTO dailysummary (ID,R_DATE,ITEM,UOM,DEPARTEMENT,STOCK_IN,STOCK_OUT,P_BALANCE) 
+              VALUES ('$item_id','$date','$name','$uom','$get_dep','$quantity','$stock_out','$total')";
+              $query_ru = mysqli_query( $conn, $Daily_Balance_History );
+
+              if($query_run3)
+              {
+              ?>
+              <script>
+                   alert("Updated Successfully");
+                   window.location="chemical_balance.php";
+              </script>
+              <?php
+             } 
+              }
+              //This is end of execute summery
+
+           if($query21)
+           {
+            echo '<script> alert("Data Updated"); </script>';
+            header( 'Location:Chemical_balance.php' );
+            }
+          }
+        
+        }
+     }
+      else{
+     ?>
+     <script>
+          alert("Insufficent Balance");
+    //   window.location="chemical_balance.php";
+     </script>
+     <?php
     }
 }

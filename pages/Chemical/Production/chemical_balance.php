@@ -46,6 +46,12 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
       </i>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
+        <a href="Production_history.php" class="nav-link" data-toggle="modal" data-target="#modal-other">
+        <i class="fa fa-cart-plus" aria-hidden="true"></i> Other</i>
+        </a>
+      </li>
+     
+      <li class="nav-item d-none d-sm-inline-block">
         <a href="Production_history.php" class="nav-link">
         <i class="fa fa-history" aria-hidden="true"> History</i>
         </a>
@@ -252,7 +258,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                   <option value="">Select...</option>
                   <?php
                    include('connect.php');
-                    $query = "SELECT id, ITEM FROM PROCHEM_BALANCE";
+                    $query = "SELECT id, ITEM FROM PROCHEM_BALANCE where id!=8";
                     $result = $conn->query($query);
                     if ($result->num_rows > 0) {
                     while ($optionData = $result->fetch_assoc()) {
@@ -296,7 +302,76 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         </div>
         <!-- /.modal-dialog -->
   </div>
-   <!-- /.Delete modal -->
+  <div class="modal fade" id="modal-other">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header" style="color:blue">
+              <h4 class="modal-title">Out</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+             <form class="form-horizontal" action="production_insert.php" method="POST">
+              <div class="card-body">
+               <div class="form-group row"  id="minimal_div">
+                <label for="inputEmail3"class="col-sm-2 col-form-label" id="label_div">Product Name</label>
+                 <select  name="ITEM_ID" required id="minimal_input" style="width:83% !important">
+                  <option value="">Select...</option>
+                  <?php
+                   include('connect.php');
+                    $query = "SELECT id, ITEM FROM PROCHEM_BALANCE where id=1 or id=2 or id=3";
+                    $result = $conn->query($query);
+                    if ($result->num_rows > 0) {
+                    while ($optionData = $result->fetch_assoc()) {
+                     $option = $optionData['ITEM'];
+                     $id = $optionData['id'];
+                     ?>
+                     <option value="<?php echo $id; ?>"><?php  echo $id; echo "----"; echo $option?> </option>
+                   <div class="form-group">
+                   <?php
+                   }}
+                   ?>
+                </select>
+              </div>
+         
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Quantity</label>
+                 <div class="col-sm-10">
+                  <input type="double" required name="STOCK_IN" required class="form-control" id="STOCK_IN" placeholder="Stock in(kg)">
+                 </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Checked by</label>
+                 <div class="col-sm-10">
+                  <input type="text" readonly value="<?php echo $_SESSION['name'] ?>" required name="RECIVED_BY" required class="form-control">
+                 </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Date</label>
+                 <div class="col-sm-10">
+                  <input type="date" required name="RECIVED_DATE" class="form-control">
+                 </div>
+              </div>
+              <div class="form-group row"  id="minimal_div">
+                <label for="inputEmail3"class="col-sm-2 col-form-label" id="label_div">To</label>
+                 <select  name="to" required id="minimal_input" style="width:83% !important">
+                  <option value="">Select...</option>
+                  <option value="1">Genda</option>
+                  <option value="2">Getema</option>
+                  <option value="3">ጥገና ኢና ልዩ ልዩ ወጪ</option>
+                </select>
+              </div>
+            </div>
+            <div class="card-footer">
+             <button type="submit" name="other_out" class="btn btn-block btn-outline-success btn-lg">Stock In</button>
+             <button type="submit"  class="btn btn-block btn-outline-danger btn-sm" data-dismiss="modal">Cancel</button>
+            </div>
+           </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+  </div>
    <div class="modal fade" id="modal-delete">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -366,7 +441,6 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
    <!-- notification modal -->
 
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -404,7 +478,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
               <?php
                $connection = mysqli_connect("localhost", "root", "");
                $db = mysqli_select_db($connection, 'ssms');
-               $query = "SELECT * FROM ProChem_Balance";
+               $query = "SELECT * FROM ProChem_Balance where id!=8";
                $query_run = mysqli_query($connection, $query);
                ?>
               <div class="card-body">

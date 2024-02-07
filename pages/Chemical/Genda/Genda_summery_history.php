@@ -234,7 +234,7 @@
               <?php
                $connection = mysqli_connect("localhost", "root", "");
                $db = mysqli_select_db($connection, 'ssms');
-               $query = "SELECT * FROM dailysummary where DEPARTEMENT='GEN'";
+               $query = "SELECT * FROM dailysummary where DEPARTEMENT='GEN' AND ID!=22";
                $query_run = mysqli_query($connection, $query);
                ?>
               <div class="card-body">

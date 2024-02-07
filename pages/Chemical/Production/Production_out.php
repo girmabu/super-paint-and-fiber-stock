@@ -876,42 +876,42 @@
                                                                                                         // ------------hardner----------------
 
                                                                                                         // -------------------maj-------------
-                                                                                                        $maj = $row['MAJ'];
-                                                                                                        $M_ITEM = "MAJ";
-                                                                                                        $maj_x_batch = (double)$row['MAJ'] *(double) $BATCH;
-                                                                                                        $mbk = $row9['BALANCE'];
-                                                                                                        $TOTAL_BALANCE9 = $mbk - $maj_x_batch;
+                                                                                                        // $maj = $row['MAJ'];
+                                                                                                        // $M_ITEM = "MAJ";
+                                                                                                        // $maj_x_batch = (double)$row['MAJ'] *(double) $BATCH;
+                                                                                                        // $mbk = $row9['BALANCE'];
+                                                                                                        // $TOTAL_BALANCE9 = $mbk - $maj_x_batch;
 
 
-                                                                                                        $maj_query = "UPDATE PROCHEM_BALANCE SET BALANCE = '$TOTAL_BALANCE9' WHERE id='8'";
-                                                                                                        $query_run1 = mysqli_query($conn, $maj_query);
+                                                                                                        // $maj_query = "UPDATE PROCHEM_BALANCE SET BALANCE = '$TOTAL_BALANCE9' WHERE id='8'";
+                                                                                                        // $query_run1 = mysqli_query($conn, $maj_query);
 
-                                                                                                        $OUT_DATE = $row19['R_DATE'];
-                                                                                                        $OUT_BALANCE = $row19['STOCK_OUT'];
-                                                                                                        $IN_BALANCE = $row19['STOCK_IN'];
+                                                                                                        // $OUT_DATE = $row19['R_DATE'];
+                                                                                                        // $OUT_BALANCE = $row19['STOCK_OUT'];
+                                                                                                        // $IN_BALANCE = $row19['STOCK_IN'];
 
-                                                                                                        if ($DATE !== $OUT_DATE) {
-                                                                                                            $OUT_BALANCE = 0;
-                                                                                                            $IN_BALANCE = 0;
-                                                                                                            $S_BALANCE =(double) $OUT_BALANCE +(double) $maj_x_batch;
-                                                                                                        }
-                                                                                                        if ($DATE == $OUT_DATE) {
-                                                                                                            $S_BALANCE = (double)$OUT_BALANCE +(double) $maj_x_batch;
-                                                                                                            $IN_BALANCE;
-                                                                                                        }
-                                                                                                        $maj_query = "UPDATE summary SET STOCK_OUT ='$S_BALANCE',STOCK_IN ='$IN_BALANCE' ,R_DATE='$DATE', P_BALANCE = '$TOTAL_BALANCE9'  WHERE id='8'";
-                                                                                                        $query_run12 = mysqli_query($conn, $maj_query);
-
-
-                                                                                                        $OUT_BALANCE = "INSERT INTO pro_sp_gel_out(ITEM,DEPARTEMENT,UOM,STOCK_IN, STOCK_OUT,P_BALANCE,RECIVED_BY,RECIVED_DATE,REMARK) 
-                                                                                                            VALUES ('$M_ITEM','$DEPARTMENT' ,'$UOM','$stock_in','$maj_x_batch', '$TOTAL_BALANCE9', '$NAME','$DATE','$REMARK')";
-                                                                                                        $query_run = mysqli_query($conn, $OUT_BALANCE);
+                                                                                                        // if ($DATE !== $OUT_DATE) {
+                                                                                                        //     $OUT_BALANCE = 0;
+                                                                                                        //     $IN_BALANCE = 0;
+                                                                                                        //     $S_BALANCE =(double) $OUT_BALANCE +(double) $maj_x_batch;
+                                                                                                        // }
+                                                                                                        // if ($DATE == $OUT_DATE) {
+                                                                                                        //     $S_BALANCE = (double)$OUT_BALANCE +(double) $maj_x_batch;
+                                                                                                        //     $IN_BALANCE;
+                                                                                                        // }
+                                                                                                        // $maj_query = "UPDATE summary SET STOCK_OUT ='$S_BALANCE',STOCK_IN ='$IN_BALANCE' ,R_DATE='$DATE', P_BALANCE = '$TOTAL_BALANCE9'  WHERE id='8'";
+                                                                                                        // $query_run12 = mysqli_query($conn, $maj_query);
 
 
+                                                                                                        // $OUT_BALANCE = "INSERT INTO pro_sp_gel_out(ITEM,DEPARTEMENT,UOM,STOCK_IN, STOCK_OUT,P_BALANCE,RECIVED_BY,RECIVED_DATE,REMARK) 
+                                                                                                        //     VALUES ('$M_ITEM','$DEPARTMENT' ,'$UOM','$stock_in','$maj_x_batch', '$TOTAL_BALANCE9', '$NAME','$DATE','$REMARK')";
+                                                                                                        // $query_run = mysqli_query($conn, $OUT_BALANCE);
 
-                                                                                                        $maj_query1 = "UPDATE dailysummary SET STOCK_OUT ='$S_BALANCE',STOCK_IN ='$IN_BALANCE' , P_BALANCE = '$TOTAL_BALANCE9'  WHERE id='8' AND R_DATE ='$DATE' ";
 
-                                                                                                        $query_run123 = mysqli_query($conn, $maj_query1);
+
+                                                                                                        // $maj_query1 = "UPDATE dailysummary SET STOCK_OUT ='$S_BALANCE',STOCK_IN ='$IN_BALANCE' , P_BALANCE = '$TOTAL_BALANCE9'  WHERE id='8' AND R_DATE ='$DATE' ";
+
+                                                                                                        // $query_run123 = mysqli_query($conn, $maj_query1);
 
                                                                                                         // -------------------maj-------------
                                                                                                         // ---------------PIGMENT-----------------
@@ -1295,34 +1295,6 @@
                                                                                                                     ?></td>
                                                                                                             </tr>
                                                                                                             <tr>
-                                                                                                                <td>MAJ</td>
-                                                                                                                <td>
-                                                                                                                    <?php
-                                                                                                                    if ($maj <= 0) {
-                                                                                                                        echo "-";
-                                                                                                                    }
-                                                                                                                    ?>
-                                                                                                                </td>
-                                                                                                                <td>
-                                                                                                                    <?php
-                                                                                                                    if ($maj_x_batch <= 0) {
-                                                                                                                        echo "-";
-                                                                                                                    }
-                                                                                                                    ?>
-                                                                                                                </td>
-
-                                                                                                                <td> <?php echo $TOTAL_BALANCE9 ?></td>
-                                                                                                                <td>
-                                                                                                                    <?php
-                                                                                                                    if ($TOTAL_BALANCE9 < 0) {
-                                                                                                                        echo "<font color=red>insufficent stock balance</font>";
-                                                                                                                    } else {
-                                                                                                                        echo "<font color=green>stock is sufficent</font>";
-                                                                                                                    }
-                                                                                                                    ?></td>
-                                                                                                            </tr>
-
-                                                                                                            <tr>
                                                                                                                 <td>HARDNER</td>
                                                                                                                 <td> <?php echo $hardner ?> </td>
                                                                                                                 <td> <?php echo $hardner_x_batch ?> </td>
@@ -1338,9 +1310,8 @@
                                                                                                             </tr>
                                                                                                             </tr>
                                                                                                         </thead>
-                                                                                                        <!-- <tbody>
                                                                         <tr>
-                                                                    </tbody> -->
+                                                                    </tbody> 
                         <?php
                                                                                                     }
                                                                                                 }

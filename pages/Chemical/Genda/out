@@ -1006,30 +1006,13 @@
 
                                            
                                                 if($DATE!==$RDATE) {
-
-                                                  $daily_summery="SELECT * FROM summary WHERE DEPARTEMENT='GEN'";
-                                                  $query_summery = mysqli_query($conn, $daily_summery);
-                                                  while ($optionData = $query_summery->fetch_assoc()) {
-                                                      $ID=$optionData['ID'];
-                                                      $RDATE = $optionData['R_DATE'];
-                                                     $ITEM=$optionData['ITEM'];
-                                                     $UOM=$optionData['UOM'];
-                                                     $DEPARTEMENT=$optionData['DEPARTEMENT'];
-                                                     $STOCK_IN=$optionData['STOCK_IN'];
-                                                     $STOCK_OUT=$optionData['STOCK_OUT'];
-                                                     $P_BALANCE=$optionData['P_BALANCE'];
-                                                     $PREFIX=$optionData['PREFIX'];
-                                                     $Daily_Balance_History = " INSERT INTO dailysummary (ID,R_DATE,ITEM,UOM,DEPARTEMENT,STOCK_IN,STOCK_OUT,P_BALANCE,PREFIX) 
-                                                     VALUES ('$ID','$RDATE','$ITEM','$UOM','$DEPARTEMENT','$STOCK_IN','$STOCK_OUT','$P_BALANCE','$PREFIX')";
-                                                       
-                                                     $query_run7 = mysqli_query($conn, $Daily_Balance_History);
-
-
-
-                                                // $Daily_Balance_History =" INSERT INTO dailysummary SELECT * FROM summary WHERE DEPARTEMENT='GEN'";
-                                                // $query_run7 = mysqli_query($conn, $Daily_Balance_History);
+                                                $Daily_Balance_History =" INSERT INTO dailysummary SELECT * FROM summary WHERE DEPARTEMENT='GEN'";
+                                                $query_run7 = mysqli_query($conn, $Daily_Balance_History);
                                             }
-                                          
+                                            if($DATE==$RDATE) {
+                                              
+                                      
+                                            }
                                         } 
 
 
@@ -1226,7 +1209,7 @@ if ($ITEM_ID == 31) {
                                                                             <tr>
                                                                         </tbody> -->
                                 <?php
-                                                                            }}
+                                                                            }
                                                                         }
                                                                     }}}
                                                                 }
