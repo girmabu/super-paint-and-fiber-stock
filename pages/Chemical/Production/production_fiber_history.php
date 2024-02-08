@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Production Chemical Balance</title>
+  <title>Super Fiber Stock</title>
   <?php include 'connect.php' ?>
   <?php session_start();       // Start the session ?>   
   <?php
@@ -11,8 +11,6 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
   header('location: ../../login.php');   // if not set the user is sendback to login page.
 }
 ?> 
- <?php $session= $_SESSION['role']; ?>
-
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -38,37 +36,10 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         <a href="../../../index3.html" class="nav-link">
         </a>
       </li>
-      <li class="breadcrumb-item">
-        <a href="../chem_index.php" class="nav-link">
+      <li class="nav-item d-none d-sm-inline-block">
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="Fiber_balance.php" class="nav-link">
         <i class="fa fa-home" aria-hidden="true"></i>Home
-        </a>
-      </i>
-      <li class="nav-item d-none d-sm-inline-block">
-      <li class="breadcrumb-item">
-        <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-in">
-        <i class="fa fa-cart-plus" aria-hidden="true"></i>In
-        </a>
-      </i>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="Production_history.php" class="nav-link" data-toggle="modal" data-target="#modal-other">
-        <i class="fa fa-cart-plus" aria-hidden="true"></i> Other</i>
-        </a>
-      </li>
-     
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="Production_history.php" class="nav-link">
-        <i class="fa fa-history" aria-hidden="true"> History</i>
-        </a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="Production_chem_summery.php" class="nav-link">
-        <i class="fas fa-anchor"></i>Summery
-        </a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="production_summery_history.php" class="nav-link">
-        <i class="fas fa-history"></i>Summery History
         </a>
       </li>
     </ul>
@@ -126,7 +97,23 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-        
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../../index2.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard </p>
+                </a>
+                
+              </li>
+            </ul>
             <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-circle"></i>
@@ -152,7 +139,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="chemical_balance.php" class="nav-link">
+                    <a href="Chemical_balance.php" class="nav-link">
                       <i class="far fa-dot-circle nav-icon"></i>
                       <p>Chemical Balance</p>
                     </a>
@@ -245,219 +232,16 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
     <!-- /.sidebar -->
   </aside>
   <!-- Content Wrapper. Contains page content -->
-  <!-- in modal -->
-  <div class="modal fade" id="modal-in">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header" style="color:blue">
-              <h4 class="modal-title">Add Item To Stock</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-             <form class="form-horizontal" action="production_insert.php" method="POST">
-              <div class="card-body">
-               <div class="form-group row"  id="minimal_div">
-                <label for="inputEmail3"class="col-sm-2 col-form-label" id="label_div">Product Name</label>
-                 <select  name="ITEM_ID" required id="minimal_input" style="width:83% !important">
-                  <option value="">Select...</option>
-                  <?php
-                   include('connect.php');
-                    $query = "SELECT id, ITEM FROM PROCHEM_BALANCE where id!=8";
-                    $result = $conn->query($query);
-                    if ($result->num_rows > 0) {
-                    while ($optionData = $result->fetch_assoc()) {
-                     $option = $optionData['ITEM'];
-                     $id = $optionData['id'];
-                     ?>
-                     <option value="<?php echo $id; ?>"><?php  echo $id; echo "----"; echo $option?> </option>
-                   <div class="form-group">
-                   <?php
-                   }}
-                   ?>
-                </select>
-              </div>
-         
-              <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Quantity</label>
-                 <div class="col-sm-10">
-                  <input type="double" required name="STOCK_IN" required class="form-control" id="STOCK_IN" placeholder="Stock in(kg)">
-                 </div>
-              </div>
-              <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Recieved by</label>
-                 <div class="col-sm-10">
-                  <input type="text" readonly value="<?php echo $_SESSION['name'] ?>" required name="RECIVED_BY" required class="form-control">
-                 </div>
-              </div>
-              <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Date</label>
-                 <div class="col-sm-10">
-                  <input type="date" required name="RECIVED_DATE" class="form-control">
-                 </div>
-              </div>
-            </div>
-            <div class="card-footer">
-             <button type="submit" name="INSERT_STOCK_IN" class="btn btn-block btn-outline-success btn-lg">Stock In</button>
-             <button type="submit"  class="btn btn-block btn-outline-danger btn-sm" data-dismiss="modal">Cancel</button>
-            </div>
-           </form>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-  </div>
-  <div class="modal fade" id="modal-other">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header" style="color:blue">
-              <h4 class="modal-title">Out</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-             <form class="form-horizontal" action="production_insert.php" method="POST">
-              <div class="card-body">
-               <div class="form-group row"  id="minimal_div">
-                <label for="inputEmail3"class="col-sm-2 col-form-label" id="label_div">Product Name</label>
-                 <select  name="ITEM_ID" required id="minimal_input" style="width:83% !important">
-                  <option value="">Select...</option>
-                  <?php
-                   include('connect.php');
-                    $query = "SELECT id, ITEM FROM PROCHEM_BALANCE";
-                    $result = $conn->query($query);
-                    if ($result->num_rows > 0) {
-                    while ($optionData = $result->fetch_assoc()) {
-                     $option = $optionData['ITEM'];
-                     $id = $optionData['id'];
-                     ?>
-                     <option value="<?php echo $id; ?>"><?php  echo $id; echo "----"; echo $option?> </option>
-                   <div class="form-group">
-                   <?php
-                   }}
-                   ?>
-                </select>
-              </div>
-         
-              <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Quantity</label>
-                 <div class="col-sm-10">
-                  <input type="double" required name="STOCK_IN" required class="form-control" id="STOCK_IN" placeholder="Stock in(kg)">
-                 </div>
-              </div>
-              <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Checked by</label>
-                 <div class="col-sm-10">
-                  <input type="text" readonly value="<?php echo $_SESSION['name'] ?>" required name="RECIVED_BY" required class="form-control">
-                 </div>
-              </div>
-              <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Date</label>
-                 <div class="col-sm-10">
-                  <input type="date" required name="RECIVED_DATE" class="form-control">
-                 </div>
-              </div>
-              <div class="form-group row"  id="minimal_div">
-                <label for="inputEmail3"class="col-sm-2 col-form-label" id="label_div">To</label>
-                 <select  name="to" required id="minimal_input" style="width:83% !important">
-                  <option value="">Select...</option>
-                  <option value="1">Genda</option>
-                  <option value="2">Getema</option>
-                  <option value="3">ጥገና ኢና ልዩ ልዩ ወጪ</option>
-                </select>
-              </div>
-            </div>
-            <div class="card-footer">
-             <button type="submit" name="other_out" class="btn btn-block btn-outline-success btn-lg">Stock In</button>
-             <button type="submit"  class="btn btn-block btn-outline-danger btn-sm" data-dismiss="modal">Cancel</button>
-            </div>
-           </form>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-  </div>
-   <div class="modal fade" id="modal-delete">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Delete Data</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <form action="process.php" method="POST">
-            <div class="modal-body">
-                    <div class="modal-body">
-                        <input type="text" readonly name="id" id="delete_id">
-                        <h4> Do you want to Delete this Data ??</h4>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"> NO </button>
-                        <button type="submit" name="delete" class="btn btn-danger"> Yes !! Delete it. </button>
-                    </div>
-                </form>
-            </div>
-            
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-  </div>
-   <div class="modal fade" id="modal-edit">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Edit Chemical Store Data</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-             <form action="production_insert.php" method="POST">
-                    <div class="modal-body">
-                        <input type="hidden" name="id" id="id">
-                        <div class="form-group">
-                            <input type="text" readonly name="item_id" id="item_id" class="form-control" readonly="readonly">
-                        </div>
-                        <div class="form-group">
-                            <label> Uom </label>
-                            <input type="text" readonly name="UOM" id="uom" class="form-control" readonly="readonly">
-                        </div>
-                        <div class="form-group">
-                            <label> Balance </label>
-                            <input type="text" name="BALANCE" id="qty" class="form-control" >
-                        </div>
-                    </div>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" name="updatedata" class="btn btn-primary">
-                <i class=" ">Save changes</i>
-              </button>
-            </div>
-            </form>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-   </div>
       <!-- /.modal -->
    <!-- notification modal -->
 
   <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Chemical Store Balance</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#"> add
-                <i class="fa fa-plus" aria-hidden="true"></i>
-                </a></li>
-            </ol>
+            <h1>Production Fiber Daily Summery</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -483,7 +267,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
               <?php
                $connection = mysqli_connect("localhost", "root", "");
                $db = mysqli_select_db($connection, 'ssms');
-               $query = "SELECT * FROM ProChem_Balance where id!=8";
+               $query = "SELECT * FROM fiber_summary where DEPARTEMENT='PRO'";
                $query_run = mysqli_query($connection, $query);
                ?>
               <div class="card-body">
@@ -491,50 +275,45 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                   <thead>
                   <tr>
                   <th scope="col"> ID</th>
-                  <th scope="col">ITEM</th>
-                  <th scope="col">UOM </th>
-                  <th scope="col"> BALANCE </th>
-                  <th scope="col"> status </th>
-                  <th scope="col"> Edit </th>
+                  <th scope="col"> Product </th>
+                   <th scope="col">ITEM</th>
+                   <th scope="col">UOM </th>
+                   <th scope="col"> In</th>
+                   <th scope="col"> Out</th>
+                   <th scope="col"> Balance</th>
+                   <th scope="col"> Date</th>
+                   <!-- <th scope="col"> WOVEN_BALANCE_PCS</th> -->
+                   <th scope="col"> In/Out_by </th>
+                   
                   </tr>
                   </thead>
                   <?php
-                   if ($query_run) {
-                  foreach ($query_run as $row) {
-                    ?>
-                <tr>
-                  <td> <?php echo $row['ID']; ?> </td>
-                   <td> <?php echo $row['ITEM']; ?> </td>
-                   <td> <?php echo $row['UOM']; ?> </td>
-                   <td>
-                    <?php
-                    if($row['BALANCE']<0){
-                    echo 0 ; 
-                     }
-                     else{
-                     echo $row['BALANCE'];
-                     }
-                    ?>
-                    </td>      
-                    <td>
-                    <?php  
-                    if($row['BALANCE']<=100 ){
-                    echo "balance is lower than min stock(100kg)";
+                  $i=1;
+                    if($query_run)
+                    {
+                    foreach($query_run as $row)
+                    {
+                      
+                   ?> 
+                     <tr>
+                     <td> <?php echo $i++; ?>
+                     <td> <?php echo $row['PREFIX']; ?> </td>     
+                      <td ID="ITEM"> <?php echo $row['ITEM']; ?>
+                      <td> <?php echo $row['UOM']; ?> </td>
+                      <td> <?php echo $row['STOCK_IN']; ?></td>
+                      <td> <?php echo $row['STOCK_OUT']; ?></td>
+                      <td> <?php echo $row['P_BALANCE']; ?></td>
+                      <td> <?php echo $row['R_DATE']; ?> </td>
+                      <td>wede</td>
+                      <!-- <td> <?php echo $row['NAME']; ?> </td> -->
+                     <!-- <td> <?php echo $row['PREFIX']; ?> </td>                                        -->
+                     </tr>
+                      <?php
+                    }}
+                    else {
+                    echo "No Record Found";
                     }
-                    if($row['BALANCE']>=100){
-                    echo "balance is sufficent";
-                     }
                     ?>
-                    <td>
-                    <button type="button"  class="btn btn-info editbtn" data-toggle="modal" data-target="#modal-edit">
-                      <i class="fa fa-pencil-square-o" height:50px !important;></i>
-                      </button>
-                    </td>
-                    </tr>
-                <?php           
-                }
-                }
-              ?>
                 </table>
               </div>
               <!-- /.card-body -->
@@ -563,8 +342,6 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
   </aside>
   <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
-
 <!-- jQuery -->
 <script src="../../../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -691,8 +468,9 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
       $('#id').val(data[0]);
       $('#item_id').val(data[1]);
       $('#uom').val(data[2]);
-      $('#qty').val(data[3]);
-    
+      $('#prod_qty').val(data[3]);
+      $('#gend_qty').val(data[4]);
+      $('#get_qty').val(data[5]);
 
     });
   });

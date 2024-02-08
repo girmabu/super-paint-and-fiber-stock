@@ -349,7 +349,7 @@ if ( isset( $_POST[ 'INSERT_STOCK_IN' ] ) )
             $data=$mainData['convertion'];
         }
 
-        $query_chem = "SELECT * FROM chemical_store_item WHERE id =2";
+        $query_chem = "SELECT * FROM chemical_store_item WHERE item_id =1";
         $chem_result = $conn->query($query_chem);
         while ($optionData = $chem_result->fetch_assoc()) {
             $option=$optionData['quantity'];
@@ -359,7 +359,7 @@ if ( isset( $_POST[ 'INSERT_STOCK_IN' ] ) )
         $resin_result=round($resin_result,2);
         if($resin_result>=0)
         {
-            $chem_update = "UPDATE chemical_store_item SET quantity = '$resin_result' WHERE id=2";
+            $chem_update = "UPDATE chemical_store_item SET quantity = '$resin_result' WHERE item_id=1";
             $query_chemup = mysqli_query($conn, $chem_update);
         }
         else {
@@ -374,7 +374,7 @@ if ( isset( $_POST[ 'INSERT_STOCK_IN' ] ) )
             $data=$mainData['convertion'];
         }
 
-        $query_chem = "SELECT * FROM chemical_store_item WHERE id =1";
+        $query_chem = "SELECT * FROM chemical_store_item WHERE item_id=2";
         $chem_result = $conn->query($query_chem);
         while ($optionData = $chem_result->fetch_assoc()) {
             $option=$optionData['quantity'];
@@ -384,7 +384,7 @@ if ( isset( $_POST[ 'INSERT_STOCK_IN' ] ) )
         $resin_result=round($resin_result,2);
         if($resin_result>=0)
         {
-            $chem_update = "UPDATE chemical_store_item SET quantity = '$resin_result' WHERE id=1";
+            $chem_update = "UPDATE chemical_store_item SET quantity = '$resin_result' WHERE item_id=2";
             $query_chemup = mysqli_query($conn, $chem_update);
         }
         else {
@@ -399,7 +399,7 @@ if ( isset( $_POST[ 'INSERT_STOCK_IN' ] ) )
             $data=$mainData['convertion'];
         }
 
-        $query_chem = "SELECT * FROM chemical_store_item WHERE id =6";
+        $query_chem = "SELECT * FROM chemical_store_item WHERE item_id =6";
         $chem_result = $conn->query($query_chem);
         while ($optionData = $chem_result->fetch_assoc()) {
             $option=$optionData['quantity'];
@@ -409,7 +409,7 @@ if ( isset( $_POST[ 'INSERT_STOCK_IN' ] ) )
         $resin_result=round($resin_result,2);
         if($resin_result>=0)
         {
-            $chem_update = "UPDATE chemical_store_item SET quantity = '$resin_result' WHERE id=6";
+            $chem_update = "UPDATE chemical_store_item SET quantity = '$resin_result' WHERE item_id=6";
             $query_chemup = mysqli_query($conn, $chem_update);
         }
         else {
@@ -719,5 +719,49 @@ if ( isset( $_POST['other_out'] ) )
     //   window.location="chemical_balance.php";
      </script>
      <?php
+    }
+    
+}
+if ( isset( $_POST[ 'updatefiber' ] ) )
+ {
+
+    $item_id = $_POST[ 'id' ];
+    $woven_pcs = $_POST[ 'woven_pcs'];
+    $fiber_pcs = $_POST[ 'fiber_pcs'];
+    $qur="SELECT * FROM profiber_balanceupdated where id='$item_id'";
+    $query_r= mysqli_query( $conn, $qur );
+    while ($optionData = $query_r->fetch_assoc() ) {
+        $form_id=$optionData['ITEM_ID'];
+    }
+
+    $qury="SELECT * FROM general_formulation where ID='$form_id'";
+    $query_run = mysqli_query( $conn, $qury );
+    while ($optionData = $query_run->fetch_assoc() ) {
+        $w_400=$optionData['W_400'];
+        $f_450=$optionData['F_450'];
+    }
+    $wov_kg=(double)$w_400*(double)$woven_pcs;
+    $fib_kg=(double)$f_450*(double)$fiber_pcs;
+    echo $fib_kg;
+    $query = "UPDATE profiber_balanceupdated SET WOVEN_BALANCE_PCS='$woven_pcs', WOVEN_BALANCE_KG='$wov_kg'
+    ,FIBER_BALANCE_PCS='$fiber_pcs',FIBER_BALANCE_KG='$fib_kg' WHERE ID='$item_id'";
+
+    $query_run = mysqli_query( $conn, $query );
+
+    if ( $query_run )
+    {
+        ?>
+        <script>
+             alert("update succesfully,thank you");
+         window.location="Fiber_balance.php";
+        </script>
+        <?php
+    } else {
+        ?>
+        <script>
+             alert("Some thing wrong");
+         window.location="Fiber_balance.php";
+        </script>
+        <?php
     }
 }

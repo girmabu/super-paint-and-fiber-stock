@@ -38,6 +38,11 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         <a href="../../../index3.html" class="nav-link">
         </a>
       </li>
+      <li class="breadcrumb-item">
+        <a href="../chem_index.php" class="nav-link">
+        <i class="fa fa-home" aria-hidden="true"></i>Home
+        </a>
+      </i>
       <li class="nav-item d-none d-sm-inline-block">
       <li class="breadcrumb-item">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-in">
@@ -140,13 +145,13 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="Fiber_Balance.php" class="nav-link">
+                    <a href="../Production/Fiber_Balance.php" class="nav-link">
                       <i class="far fa-dot-circle nav-icon"></i>
                       <p>Fiber Balance</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="Production_out.php" class="nav-link">
+                    <a href="../Production/Production_out.php" class="nav-link">
                       <i class="far fa-dot-circle nav-icon"></i>
                       <p>Production Out</p>
                     </a>
@@ -376,7 +381,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         </div>
         <!-- /.modal-dialog -->
   </div>
-   <div class="modal fade" id="modal-edit">
+  <div class="modal fade" id="modal-edit">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
@@ -386,7 +391,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
               </button>
             </div>
             <div class="modal-body">
-             <form action="process.php" method="POST">
+             <form action="Getema_insert.php" method="POST">
                     <div class="modal-body">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
@@ -397,23 +402,19 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                             <input type="text" name="uom" id="uom" class="form-control" readonly="readonly">
                         </div>
                         <div class="form-group">
-                            <label> Production Qty </label>
-                            <input type="text" name="prod_qty" id="prod_qty" class="form-control" >
+                            <label>Woven pcs</label>
+                            <input type="text" name="woven_pcs" id="woven_pcs" class="form-control" >
                         </div>
                         <div class="form-group">
-                            <label> Genda Qty </label>
-                            <input type="text" name="gend_qty" id="gend_qty" class="form-control" >
-                        </div>
-                        <div class="form-group">
-                            <label> Getema Qty </label>
-                            <input type="text" name="get_qty" id="get_qty" class="form-control" >
+                            <label>Fiber pcs</label>
+                            <input type="text" name="fiber_pcs" id="fiber_pcs" class="form-control" >
                         </div>
                     </div>
             
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" name="updatedata" class="btn btn-primary">
+              <button type="submit" name="updatefiber" class="btn btn-primary">
                 <i class=" ">Save changes</i>
               </button>
             </div>
@@ -422,7 +423,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-   </div>
+  </div>
       <!-- /.modal -->
    <!-- notification modal -->
 
@@ -473,12 +474,13 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                     <thead>
                     <tr>
                         <th scope="col"> ID</th>
-                        <th scope="col">ITEM</th>
-                        <th scope="col">UOM </th>
-                        <th scope="col"> WOVEN_BALANCE_PCS </th>
-                        <th scope="col"> WOVEN_BALANCE_KG </th>
-                        <th scope="col"> FIBER_BALANCE_PCS </th>
-                        <th scope="col"> FIBER_BALANCE_KG </th>
+                        <th scope="col">Item</th>
+                        <th scope="col">Uom </th>
+                        <th scope="col"> Woven pcs </th>
+                        <th scope="col"> Woven Kg </th>
+                        <th scope="col"> Fiber Pcs </th>
+                        <th scope="col"> Fiber kg </th>
+                        <th scope="col">Edit </th>
                     </tr>
                     </thead>
                     <?php
@@ -522,6 +524,11 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                 </td>
                     <td> <?php echo $row['FIBER_BALANCE_PCS']; ?> </td>
                     <td> <?php echo $row['FIBER_BALANCE_KG']; ?> </td>  
+                    <td>
+                    <button type="button"  class="btn btn-info editbtn" data-toggle="modal" data-target="#modal-edit">
+                      <i class="fa fa-pencil-square-o" height:50px !important;></i>
+                      </button>
+                    </td>
                 </tr>
                 <?php           
                 }
@@ -688,9 +695,8 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
       $('#id').val(data[0]);
       $('#item_id').val(data[1]);
       $('#uom').val(data[2]);
-      $('#prod_qty').val(data[3]);
-      $('#gend_qty').val(data[4]);
-      $('#get_qty').val(data[5]);
+      $('#woven_pcs').val(data[3]);
+      $('#fiber_pcs').val(data[5]);
 
     });
   });

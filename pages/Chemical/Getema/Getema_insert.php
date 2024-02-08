@@ -361,3 +361,51 @@ if (isset($_POST["updatedata"])) {
         echo '<script> alert("Data Not Saved"); </script>';
     }
 }
+if ( isset( $_POST['updatefiber'] ) )
+ {
+    $item_id = $_POST[ 'id' ];
+    $woven_pcs = $_POST['woven_pcs'];
+    $fiber_pcs = $_POST['fiber_pcs'];
+    $qur="SELECT * FROM getfiber_balance where id='$item_id'";
+    $query_r= mysqli_query( $conn, $qur );
+    while ($optionData = $query_r->fetch_assoc() ) {
+        $form_id=$optionData['ITEM_ID'];
+    }
+
+    $qury="SELECT * FROM general_formulation where ID='$form_id'";
+    $query_run = mysqli_query( $conn, $qury );
+    while ($optionData = $query_run->fetch_assoc() ) {
+        $w_400=$optionData['W_400'];
+        $f_450=$optionData['F_450'];
+    }
+    if($w_400!=0){
+        $wov_kg=(double)$w_400*(double)$woven_pcs;
+    }
+    else{
+        $wov_kg=0;
+        $woven_pcs=0;
+    }
+    $fib_kg=(double)$f_450*(double)$fiber_pcs;
+    echo $fib_kg;
+    $query = "UPDATE getfiber_balance SET WOVEN_BALANCE_PCS='$woven_pcs', WOVEN_BALANCE_KG='$wov_kg'
+    ,FIBER_BALANCE_PCS='$fiber_pcs',FIBER_BALANCE_KG='$fib_kg' WHERE ID='$item_id'";
+
+    $query_run = mysqli_query( $conn, $query );
+
+    if ( $query_run )
+    {
+        ?>
+        <script>
+             alert("update succesfully,thank you");
+         window.location="Fiber_balance.php";
+        </script>
+        <?php
+    } else {
+        ?>
+        <script>
+             alert("Some thing wrong");
+         window.location="Fiber_balance.php";
+        </script>
+        <?php
+    }
+}

@@ -469,20 +469,20 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                    foreach ($query_run as $row) {
                 ?>  
                 <tr>
-                <td> <?php echo $row['ID']; ?> </td>
-                <td> <?php echo $row['ITEM']; ?> </td>
+                <td style="width:1px!important"> <?php echo $row['ID']; ?> </td>
+                <td style="width:10px!important"> <?php echo $row['ITEM']; ?> </td>
                 <!-- <td> <?php echo $row['UNIT']; ?> </td> -->
-                <td> <?php echo $row['F_450']; ?> </td>
-                <td> <?php echo $row['W_400']; ?> </td>
-                <td> <?php echo $row['GP_RESIN']; ?> </td>
-                <td> <?php echo $row['N_RESIN']; ?> </td>
-                <td> <?php echo $row['SP_GEL']; ?> </td>
-                <td> <?php echo $row['GP_GEL']; ?> </td>
-                <td> <?php echo $row['CALCIUM']; ?> </td>
-                <td> <?php echo $row['HARDNER']; ?> </td>
-                <td> <?php echo $row['PIGMENT']; ?> </td>
-                <td> <?php echo $row['MAJ']; ?> </td>
-                <td>
+                <td style="width:5px!important"> <?php echo $row['F_450']; ?> </td>
+                <td style="width:10px!important"> <?php echo $row['W_400']; ?> </td>
+                <td style="width:10px!important"> <?php echo $row['GP_RESIN']; ?> </td>
+                <td style="width:10px!important"> <?php echo $row['N_RESIN']; ?> </td>
+                <td style="width:10px!important"> <?php echo $row['SP_GEL']; ?> </td>
+                <td style="width:10px!important"> <?php echo $row['GP_GEL']; ?> </td>
+                <td style="width:10px!important"> <?php echo $row['CALCIUM']; ?> </td>
+                <td style="width:10px!important"> <?php echo $row['HARDNER']; ?> </td>
+                <td style="width:10px!important"> <?php echo $row['PIGMENT']; ?> </td>
+                <td style="width:10px!important"> <?php echo $row['MAJ']; ?> </td>
+                <td style="width:10px!important">
                 <?php
                 $dis="";
                 if($session==2)
@@ -490,7 +490,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                   $dis='disabled';
                 }
                 ?>
-                  <button data-toggle="modal" href="#modal-edit-formulation" <?php echo $dis; ?> class="btn btn-info editbtn">
+                  <button  data-toggle="modal" href="#modal-edit-formulation" <?php echo $dis; ?> class="btn btn-info editbtn">
                   <i class="fa fa-pencil-square-o" height:50px !important;></i>
               </button>
                  </td>

@@ -73,17 +73,17 @@ if(isset($_POST['INSERT_STOCK_IN']))
         $genda_balance ="UPDATE GENCHEM_BALANCE SET BALANCE = '$balance' WHERE id='$ITEM_ID'";
         $query_run1= mysqli_query($conn, $genda_balance);
         $flag=false;
-        if($ITEM_ID==20){
-            $flag=true;
-            $id=1;
-        }
-        else if($ITEM_ID==21)
-        { 
+        if($ITEM_ID==20){//GP resin Item_id
             $flag=true;
             $id=2;
+        }
+        else if($ITEM_ID==21)// GP Gelcoat
+        { 
+            $flag=true;
+            $id=11;
         
         }
-        else if($ITEM_ID==23)
+        else if($ITEM_ID==23)// Hardner
         {
             $flag=true;
             $id=6;
@@ -100,15 +100,15 @@ if(isset($_POST['INSERT_STOCK_IN']))
             $mini_result = $conn->query( $mini_query );
         while ( $mini_option = $mini_result->fetch_assoc() ) {
             $mini_balance= $mini_option['quantity'];
-        if($ITEM_ID==20){
+        if($ITEM_ID==20){// GP Resin
             $resin_kg= (double)$STOCK_IN/(double)$data;
             $actual_balance=$mini_balance-$resin_kg;
-            $total_balance = "UPDATE chemical_store_item SET quantity='$actual_balance' WHERE item_id=$id";
+            $total_balance = "UPDATE chemical_store_item SET quantity='$actual_balance' WHERE item_id=1";
             $query_run10 = mysqli_query( $conn, $total_balance );
         }
-        else if($ITEM_ID==21)
+        else if($ITEM_ID==21)//GP Gelcoat
         {
-            $query_main = "SELECT * FROM main_store_item WHERE id =$id";
+            $query_main = "SELECT * FROM main_store_item WHERE id =2";
            $main_result = $conn->query($query_main);
            while ($mainData = $main_result->fetch_assoc()) {
            $data1=$mainData['convertion'];
@@ -116,11 +116,11 @@ if(isset($_POST['INSERT_STOCK_IN']))
             $jelcoat_kg=(double)$STOCK_IN/(double)$data1;
             $actual_balance=$mini_balance-$jelcoat_kg;
 
-            $total_balance = "UPDATE chemical_store_item SET quantity='$actual_balance' WHERE item_id=$id";
+            $total_balance = "UPDATE chemical_store_item SET quantity='$actual_balance' WHERE item_id=2";
             $query_run10 = mysqli_query( $conn, $total_balance );
         }
         else if($ITEM_ID==23)
-        { $query_main = "SELECT * FROM main_store_item WHERE id =$id";
+        { $query_main = "SELECT * FROM main_store_item WHERE id =6";
             $main_result = $conn->query($query_main);
             while ($mainData = $main_result->fetch_assoc()) {
             $data2=$mainData['convertion'];
@@ -423,5 +423,44 @@ if(isset($_POST['addfiber']))
    {
        echo '<script> alert("Data Not Saved"); </script>';
    }
+}
+if ( isset( $_POST[ 'updatefiber' ] ) )
+ {
+
+    $item_id = $_POST[ 'id' ];
+    $fiber_pcs = $_POST[ 'fiber_pcs'];
+    $qur="SELECT * FROM genfiber_balance where ID='$item_id'";
+    $query_r= mysqli_query( $conn, $qur );
+    while ($optionData = $query_r->fetch_assoc() ) {
+        $form_id=$optionData['ITEM_ID'];
+    }
+
+    $qury="SELECT * FROM general_formulation where ID='$form_id'";
+    $query_run = mysqli_query( $conn, $qury );
+    while ($optionData = $query_run->fetch_assoc() ) {
+        $f_450=$optionData['F_450'];
+    }
+    $fib_kg=(double)$f_450*(double)$fiber_pcs;
+
+    $query = "UPDATE genfiber_balance SET FIBER_BALANCE_PCS='$fiber_pcs',FIBER_BALANCE_KG='$fib_kg' WHERE ID='$item_id'";
+
+    $query_run = mysqli_query( $conn, $query );
+
+    if ( $query_run )
+    {
+        ?>
+        <script>
+             alert("update succesfully,thank you");
+         window.location="Fiber_balance.php";
+        </script>
+        <?php
+    } else {
+        ?>
+        <script>
+             alert("Some thing wrong");
+         window.location="Fiber_balance.php";
+        </script>
+        <?php
+    }
 }
 ?>

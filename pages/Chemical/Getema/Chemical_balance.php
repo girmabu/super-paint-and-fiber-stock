@@ -38,6 +38,11 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         <a href="../../../index3.html" class="nav-link">
         </a>
       </li>
+      <li class="breadcrumb-item">
+        <a href="../chem_index.php" class="nav-link">
+        <i class="fa fa-home" aria-hidden="true"></i>Home
+        </a>
+      </i>
       <li class="nav-item d-none d-sm-inline-block">
       <li class="breadcrumb-item">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-in">

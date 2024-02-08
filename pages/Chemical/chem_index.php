@@ -36,12 +36,13 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         <a href="../../index3.html" class="nav-link">
         </a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
       <li class="breadcrumb-item">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-request">
         <i class="fa fa-cart-plus" aria-hidden="true"></i>Request
         </a>
       </i>
+      <li class="nav-item d-none d-sm-inline-block">
+
       <li class="breadcrumb-item">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-out">
         <i class="fa fa-minus-circle fa-1x"  aria-hidden="true"></i>Out

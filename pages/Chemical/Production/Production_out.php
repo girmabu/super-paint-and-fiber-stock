@@ -217,7 +217,11 @@
         <a href="../../../index3.html" class="nav-link">
         </a>
       </li>
-     
+      <li class="breadcrumb-item">
+        <a href="chemical_balance.php" class="nav-link">
+        <i class="fa fa-home" aria-hidden="true"></i>Home
+        </a>
+      </i>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-outPaint">
         <i class="fa fa-outdent" aria-hidden="true"></i>To Paint
