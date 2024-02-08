@@ -328,7 +328,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
             </div>
             <div class="modal-body">
             <!-- here you can edit the data of fiber main store -->
-             <form action="db/production_insert.php" method="POST">
+             <form action="Production/production_insert.php" method="POST">
                     <div class="modal-body">
                         <input type="hidden" name="id"id="formulation_id">
                         <div class="form-group">

@@ -571,11 +571,17 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
       <!-- End of Approve Modal --> 
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+  
+        <?php
+        if(isset($_POST['save']))
+        {
+            $date=$_POST['date'];
+            ?>
+              <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Paint Main Store Raw Material Balance</h1>
+            <h1><?=$date?> Paint Raw Material Transaction History </h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -588,69 +594,44 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
       </div><!-- /.container-fluid -->
       
     </section>
-        <?php
-        if(isset($_POST['save']))
-        {
-            $date=$_POST['date'];
-            $x="SELECT date from mainhistory WHERE date='$date'";
+            <?php
+            $x="SELECT * from main_history WHERE date='$date'";
             $re=mysqli_query($conn,$x) or die(mysqli_error($conn));
-            if(mysqli_num_rows($re)>0){
+            $r=mysqli_fetch_assoc($re);  
+            if($r==null){
+              $i=0;
+              $o=0;
                 $y="SELECT * from msitementry Order by itemname Asc";
                $yy= mysqli_query($conn,$y) or die(mysqli_error($conn));
-                while($val=mysqli_fetch_assoc($yy)){
-                    $itemname=$val['itemname'];
+              while($val=mysqli_fetch_assoc($yy)){
+                    $item_id=$val['id'];
                     $unit=$val['unit'];
                     $balance=$val['quantity'];
-                    $in="SELECT quantity from mainin WHERE itemname='$itemname' and date='$date'";
+                    $in="SELECT quantity from main_in WHERE paint_main_id='$item_id' and date='$date'";
                    $in1=mysqli_query($conn,$in) or die(mysqli_error($conn));
                    if(mysqli_num_rows($in1)>0){
-                    $i1=mysqli_fetch_assoc($in1);
-                    $i=$i1['quantity'];
+                    while( $i1=mysqli_fetch_assoc($in1)){$i=$i+$i1['quantity'];}
                    }
                    else{$i=0;}
-                   $out="SELECT quantity from mainout WHERE itemname='$itemname' and date='$date'";
+                   $out="SELECT quantity from main_out WHERE paint_main_id='$item_id' and date='$date'";
                    $out1=mysqli_query($conn,$out) or die(mysqli_error($conn));
                    if(mysqli_num_rows($out1)>0){
-                    $out1=mysqli_fetch_assoc($o1);
-                    $o=$out1['quantity'];
+                    while($ot1=mysqli_fetch_assoc($out1)){$o=$o+$ot1['quantity'];}
+                    
+                    
                    }
                    else{$o=0;}
-                   $result="INSERT INTO mainhistory (desc_of_item,unit,input,output,balance,date) VALUES ('$itemname','$unit','$i','$o','$balance','$date')";
+                   $result="INSERT INTO main_history (paint_main_id,input,output,balance,date) VALUES ('$item_id','$i','$o','$balance','$date')";
                    $rs=mysqli_query($conn,$result) or  die(mysqli_error($conn));
 
                 }
+
                 $dt="INSERT INTO maindateholder (date) VALUES ('$date')";
                 $dt1=mysqli_query($conn,$dt) or die(mysqli_error($conn));
-                
 
-
-            }
-            else{
                 ?>
-                <script>
-                    alert("This date aready saved,Please contact Administrator !!");
-                    Window.loaction="Paint_main.php";
-                </script>
-                <?php
-            }
 
-       
-            
-        }
-        $dbName = "ssms";
-        $dbHost = "localhost";
-        $dbUser = "root";
-        $dbPass = "";
-        $conn = mysqli_connect($dbHost, $dbUser, $dbPass, $dbName);
-        if (!$conn) {
-            die("Something went wrong");
-        }
-        ?>
-        <?php
-         $session= $_SESSION['role'];
-         ?>
-    <!-- Main content -->
-    <section class="content">
+<section class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
@@ -660,9 +641,9 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
               <?php
                 $connection = mysqli_connect("localhost","root","");
                 $db = mysqli_select_db($connection, 'ssms');
-                $sql = "SELECT * FROM msitementry";
+                $sql =  "SELECT * FROM main_history WHERE date='$date'";
                 $result=mysqli_query($connection,$sql);
-                $query = "SELECT * FROM msitementry";
+                $query = "SELECT * FROM main_history WHERE date='$date'";
                 $query_run = mysqli_query($connection, $query);
             ?>
               <div class="card-body">
@@ -670,13 +651,12 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                  <th>Id</th>
-                  <th>Category</th>
-                    <th>Discription of Item</th>
+                  <th>Discription of Item</th>
                     <th>Unit of Measurement</th>
+                    <th>In</th>
+                    <th>Out</th>
                     <th>Balance</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>Date</th>
                   </tr>
                   </thead>
                   <?php
@@ -684,31 +664,23 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
          {
             foreach($query_run as $row)
             {
-            
+              $item_id = $row['paint_main_id'];
+                        $query ="SELECT * FROM msitementry WHERE id =$item_id";
+                        $result = $conn->query($query);
+                        if($result->num_rows> 0){
+                            while($optionData=$result->fetch_assoc()){
+                            $option =$optionData['itemname'];
+                            $unit=$optionData['unit'];
+                             }
+                           }
         ?>  
        <tr>
-       <td> <?php echo $row['id']; ?> </td>
-       <td> <?php echo $row['type']; ?> </td>
-         <td> <?php echo $row['itemname'] ?> </td>
-         <td> <?php echo $row['unit']; ?> </td>
-         <td> <?php echo $row['quantity']; ?> </td>
-         <td>
-          <?php
-          $dis="";
-          if($session==2)
-          {
-            $dis='disabled';
-          }
-          ?>
-         <button type="button"  class="btn btn-info editbtn" <?php echo $dis; ?> data-toggle="modal" data-target="#modal-edit">
-         <i class="fa fa-pencil-square-o" height:50px !important;></i>
-          </button>
-        </td>
-        <td>
-        <button type="button" class="btn btn-danger deletebtn"<?php echo $dis; ?> data-toggle="modal" data-target="#modal-delete">
-        <i class="fa fa-times"></i>
-        </a>
-          </td>
+       <td> <?php echo $option ?> </td>
+         <td> <?php echo $unit ?> </td>
+         <td> <?php echo $row['input']; ?> </td>
+         <td> <?php echo $row['output']; ?> </td>
+         <td> <?php echo $row['balance']; ?> </td>
+         <td> <?php echo $row['date']; ?> </td>
         </tr>
         <?php           
         }
@@ -726,8 +698,34 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
       </div>
       <!-- /.container-fluid -->
     </section>
+    </div>
+                <?php
+
+            }
+            else{
+                ?>
+                <div class="alert alert-warning" role="alert">
+                This date aready saved,Please contact Administrator !!
+</div>
+                <?php
+            }
+
+       
+            
+          }
+
+
+        
+
+     
+        ?>
+    <!-- Main content -->
+
+
+   
+
     <!-- /.content -->
-  </div>
+ 
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">

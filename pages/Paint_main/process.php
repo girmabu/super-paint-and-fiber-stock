@@ -8,14 +8,12 @@ if(isset($_POST['approve']))
     $uom = $_POST['uom'];
     $quantity = $_POST['quantity'];
     $approved_by = $_POST['approved_by'];
-    $ref_no=$_POST['ref_no'];
-    $checked_by = $_POST['checked_by'];
-    $received_by=$_POST['received_by'];
+    $checked_by = $_POST['received_by'];
     $date= $_POST['date'];
-    include('connect.php');
-    $qty ="SELECT * FROM main_store_item where id=$item_id ";
+    $qty ="SELECT * FROM msitementry where id=$item_id ";
+
     // $result = $conn->query($qty);
- $flag=true;
+   $flag=true;
     $result = mysqli_query($conn, $qty);
     if($result->num_rows> 0){
         while($optionData=$result->fetch_assoc()){
@@ -24,26 +22,24 @@ if(isset($_POST['approve']))
         $balance =(int) $option-(int)$quantity;
     }
 }
-echo $quantity;
+
 if((int)$option<(int)$quantity)
 {
     $now=(int)$quantity-(int)$option;
-    $balance=0;
-    $sql ="UPDATE notification SET quantity = '$now' WHERE id='$id'";
+    $sql ="UPDATE paint_notification SET quantity = '$now' WHERE id='$id'";
      //For main store the system updates balances to zero
-    $balance_main_store ="UPDATE main_store_item SET quantity = '$balance' WHERE id='$item_id'";
+    $balance_main_store ="UPDATE msitementry SET quantity = '0' WHERE id='$item_id'";
   //main store out balance is updated to option.. beginning balance outs= option and balance =0;
-    $query_out = "INSERT INTO main_store_item_in (`main_store_item_id`,`uom`,`outs`,`balance`,`ref_no`,`approved_by`,`checked_by`,`date`) VALUES ('$item_id','$uom','$option','$balance','$ref_no','$approved_by','$checked_by','$date')";
+    $query_out = "INSERT INTO main_out (`paint_main_id`,`quantity`,`request`,`checked_by`,`reqdepartment`,`date`) VALUES ('$item_id','$quantity','$checked_by','$approved_by','2','$date')";
     //The following code is used to select the quantity from the min store item
-    $mini_bal ="SELECT quantity FROM fiber_mini_item WHERE main_store_item_id ='$item_id'";
+    $mini_bal ="SELECT quantity FROM Paint_mini_item WHERE paint_main_id ='$item_id'";
   //This is the latest update
     $result1 = mysqli_query($conn, $mini_bal);
     if($result1->num_rows> 0){
         while($optionData=$result1->fetch_assoc()){
         $option1 =$optionData['quantity'];
-    $bal_mini =(int)$option1+(int)$option;
-    $balance_mini_store ="UPDATE fiber_mini_item SET quantity = '$bal_mini' WHERE main_store_item_id='$item_id'";
-    $query = "INSERT INTO fiber_mini_item_in (`main_store_item_id`,`uom`,`balance`,`quantity`,`received_by`,`checked_by`,`date`) VALUES ('$item_id','$uom','$bal_mini','$option','$received_by','$checked_by','$date')";
+    $bal_mini =(int)$option1+(int)$quantity;
+    $balance_mini_store ="UPDATE Paint_mini_item SET quantity = '$bal_mini' WHERE paint_main_id='$item_id'";
     }
     }
  
@@ -52,15 +48,14 @@ if((int)$option<(int)$quantity)
     $sq = mysqli_query($conn, $balance_main_store);
     $sq = mysqli_query($conn, $balance_mini_store);
     $query_out=mysqli_query($conn,$query_out);
-    $query_run = mysqli_query($conn, $query);
     // 
     }
     else if((int)$option>=(int)$quantity)
     {
-    $sql="DELETE  FROM notification WHERE id=$id";
-    $balance_main_store ="UPDATE main_store_item SET quantity = '$balance' WHERE id='$item_id'";
-    $mini_bal ="SELECT quantity FROM fiber_mini_item WHERE main_store_item_id ='$item_id'";
-    $query_out = "INSERT INTO main_store_item_in (`main_store_item_id`,`uom`,`outs`,`balance`,`ref_no`,`approved_by`,`checked_by`,`date`) VALUES ('$item_id','$uom','$quantity','$balance','$ref_no','$approved_by','$checked_by','$date')";
+    $sql="DELETE  FROM paint_notification WHERE id=$id";
+    $balance_main_store ="UPDATE msitementry SET quantity = '$balance' WHERE id='$item_id'";
+    $mini_bal ="SELECT quantity FROM Paint_mini_item WHERE paint_main_id ='$item_id'";
+    $query_out = "INSERT INTO main_out (`paint_main_id`,`quantity`,`request`,`checked_by`,`reqdepartment`,`date`) VALUES ('$item_id','$quantity','$checked_by','$approved_by','2','$date')";
     $result1 = mysqli_query($conn, $mini_bal);
     if($result1->num_rows> 0){
         while($optionData=$result1->fetch_assoc()){
@@ -69,15 +64,13 @@ if((int)$option<(int)$quantity)
    
         }
         }
-        $query = "INSERT INTO fiber_mini_item_in (`main_store_item_id`,`uom`,`balance`,`quantity`,`received_by`,`checked_by`,`date`) VALUES ('$item_id','$uom','$bal_mini','$quantity','$received_by','$checked_by','$date')";
-        $balance_mini_store ="UPDATE fiber_mini_item SET quantity = '$bal_mini' WHERE main_store_item_id='$item_id'";
+        $balance_mini_store ="UPDATE Paint_mini_item SET quantity = '$bal_mini' WHERE paint_main_id='$item_id'";
 
         // main function transaction
         $sql_run=mysqli_query($conn, $sql);
         $sq = mysqli_query($conn, $balance_main_store);
         $sq = mysqli_query($conn, $balance_mini_store);
         $query_out=mysqli_query($conn,$query_out);
-        $query_run = mysqli_query($conn, $query);
         }
         else if($q){
             $flag=false;
@@ -86,12 +79,21 @@ if((int)$option<(int)$quantity)
         if($flag)
     {
       
-        header('Location: fiber_main.php');
-        echo '<script> alert("Data Saved"); </script>';
+        ?>
+        <script>
+             alert("update succesfully,thank you");
+         window.location="paint_main.php";
+        </script>
+        <?php
     }
     else
     {
-        echo '<script> alert("Your Balance is too low "); </script>';
+        ?>
+        <script>
+             alert("Something wrong");
+         window.location="paint_main.php";
+        </script>
+        <?php
     }
 }
 
@@ -109,12 +111,21 @@ if (isset($_POST['insertdata']))
     echo $query;
     if($query_run)
     {
-        echo '<script> alert("Added to record Succesfuly"); </script>';
-        header('Location: Paint_main.php');
+        ?>
+        <script>
+             alert("update succesfully,thank you");
+         window.location="paint_main.php";
+        </script>
+        <?php
     }
     else
     {
-        echo '<script> alert("Data Not Saved"); </script>';
+        ?>
+    <script>
+         alert("Something wrong");
+     window.location="paint_main.php";
+    </script>
+    <?php
     }
 }
 
@@ -164,8 +175,8 @@ if(isset($_POST['update']))
     $sq="UPDATE msitementry  SET quantity ='$quantity' WHERE id='$id'";
     $st=mysqli_query($conn,$sq) or die(mysqli_error($conn));
         
-    $st2="INSERT INTO mainin (itemname,unit,quantity,date,recieved,remark) VALUES('$itemname','$uom','$quantity','$date','$received_by','$remark')";
-    $st3=mysqli_query($conn,$st2) or die(mysqli_error($conn));
+    $st2="INSERT INTO main_in (paint_main_id,quantity,date,recieved,remark) VALUES('$id','$quantity','$date','$received_by','$remark')";;
+    $st3=mysqli_query($conn,$st2) or die(mysqli_error($conn)) or die(mysqli_error($conn));
     ?>
     <script>
          alert("update succesfully,thank you");
@@ -182,21 +193,13 @@ if(isset($_POST['savefile']))
     $id = $_POST['id'];
     $quantity = $_POST['quantity'];
     $date=$_POST['date'];
-    $origin=$_POST['origin'];
     $received_by=$_POST['received_by'];
-
     include('connect.php');
-    $qu ="SELECT itemname,unit FROM msitementry WHERE id='$id'";
-    $res = $conn->query($qu);
-    $Data=$res->fetch_assoc();
-    $itemname=$Data['itemname'];
-    $uom=$Data['unit'];
     $sql="UPDATE msitementry  SET quantity = quantity+'$quantity' WHERE id='$id'";
-    $query_run = $conn->query($sql);
+    $query_run = $conn->query($sql) or die(mysqli_error($conn));
     if($query_run)
     {
-        
-    $st="INSERT INTO mainin (itemname,unit,quantity,date,recieved,origin) VALUES('$itemname','$uom','$quantity','$date','$received_by','$origin')";
+    $st="INSERT INTO main_in (paint_main_id,quantity,date,recieved) VALUES('$id','$quantity','$date','$received_by')";
     $query_run=$conn->query($st);
     ?>
     <script>
@@ -234,21 +237,18 @@ if (isset($_POST['main_store_out']))
     $checked_by = $_POST['checked_by'];
     $received_by = $_POST['received_by'];
     $date= $_POST['date'];
-    include('connect.php');
     $qty ="SELECT * FROM msitementry WHERE id ='$item_id'";
     $result = $conn->query($qty);
     if($result->num_rows> 0){
         while($optionData=$result->fetch_assoc()){
-            $itemname =$optionData['itemname'];
         $option =$optionData['quantity'];
         $balance = $option-$quantity;
-        $uom=$optionData['unit'];
     }
     }
     if($balance>=0){
     $up="UPDATE msitementry SET quantity = '$balance' WHERE id='$item_id'";
-    $query = "INSERT INTO mainout (`itemname`,`unit`,`quantity`,`date`,`request`,`reqdepartment`,`remark`)
-     VALUES ('$itemname','$uom','$quantity','$date','$checked_by','$received_by','$remark')";
+    $query = "INSERT INTO main_out (`paint_main_id`,`quantity`,`date`,`request`,`reqdepartment`,`remark`)
+     VALUES ('$item_id','$quantity','$date','$checked_by','$received_by','$remark')";
     $query1 = $conn->query($up);
     $query2 = $conn->query($query);
     if($query2)

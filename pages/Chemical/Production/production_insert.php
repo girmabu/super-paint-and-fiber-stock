@@ -35,23 +35,32 @@ if ( isset( $_POST[ 'UpdateFormulation' ] ) )
     $GP_RESIN = $_POST[ 'GP_RESIN' ];
     $N_RESIN = $_POST[ 'N_RESIN' ];
     $SP_GEL = $_POST[ 'SP_GEL' ];
-    $GP_GEL = $_POST[ 'GP_GEL' ];
+    $GP_GEL = $_POST[ 'GP_GEL'];
     $HARDNER = $_POST[ 'HARDNER' ];
     $PIGMENT = $_POST[ 'PIGMENT' ];
     $CALCIUM = $_POST[ 'CALCIUM' ];
     $MAJ = $_POST[ 'MAJ' ];
 
-    $query = "UPDATE General_Formulation SET ITEM='$PRODUCT_TYPE', F_450='$F_450', W_400='$W_400',GP_RESIN='$GP_RESIN',
-     N_RESIN='$N_RESIN',SP_GEL='$SP_GEL',HARDNER='$HARDNER',PIGMENT='$PIGMENT',CALCIUM='$CALCIUM',MAJ='$MAJ' WHERE ID='$update_id'";
+    $query = "UPDATE general_formulation SET ITEM='$PRODUCT_TYPE', F_450='$F_450', W_400='$W_400',GP_RESIN='$GP_RESIN',
+     N_RESIN='$N_RESIN',SP_GEL='$SP_GEL',GP_GEL='$GP_GEL',HARDNER='$HARDNER',PIGMENT='$PIGMENT',CALCIUM='$CALCIUM',MAJ='$MAJ' WHERE ID='$update_id'";
 
-    $query_run = mysqli_query( $conn, $query );
+     $query_run = mysqli_query( $conn, $query );
 
     if ( $query_run )
     {
-        echo '<script> alert("Data Updated"); </script>';
-        header( 'Location:production_formulation.php' );
+        ?>
+        <script>
+             alert("update succesfully,thank you");
+         window.location="../formulation.php";
+        </script>
+        <?php
     } else {
-        echo '<script> alert("Data Not Updated"); </script>';
+        ?>
+        <script>
+             alert("Some Thing Wrong");
+         window.location="../formulation.php";
+        </script>
+        <?php
     }
 }
 if ( isset( $_POST[ 'INSERT_PRODUCTION_BALANCE' ] ) ) {

@@ -35,27 +35,22 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
       </li>
     
       <li class="nav-item d-none d-sm-inline-block">
-         <li class="nav-item d-none d-sm-inline-block">
-         <a href="Paint_main.php" class="nav-link">
+      <li class="nav-item d-none d-sm-inline-block">
+         <a href="Paint_mini.php" class="nav-link">
         <i class="fa fa-home" aria-hidden="true"></i>home
         </a>
          </li>
 
  
-      <li class="breadcrumb-item">
-        <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-in">
-        <i class="fa fa-cart-plus" aria-hidden="true"></i>In
+         <li class="breadcrumb-item">
+        <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-request">
+        <i class="fa fa-cart-plus" aria-hidden="true"></i>Request
         </a>
       </i>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-out">
-        <i class="fa fa-outdent" aria-hidden="true"></i>out
-        </a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">
-        <i class="fa fa-history" aria-hidden="true"> History</i>
+        <i class="fa fa-outdent" aria-hidden="true"></i>convert(Kg)
         </a>
       </li>
 
@@ -142,7 +137,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
-                Main Store
+              Paint Mini Store
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -172,12 +167,12 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
     <!-- /.sidebar -->
   </aside>
   <!-- Content Wrapper. Contains page content -->
-  <!-- out modal -->
-  <div class="modal fade" id="modal-out">
+ <!-- in modal -->
+ <div class="modal fade" id="modal-request">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header" style="color:blue">
-              <h4 class="modal-title">Item Out from  Paint Main Store</h4>
+              <h4 class="modal-title">Request Item</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -186,138 +181,40 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
               <div class="card-body">
                <div class="form-group row"  id="minimal_div">
                 <label for="inputEmail3">Discription of Item</label>
-                <select class="form-control" name="id" required id="inputName">
-                 
-                   <?php 
-                   include('connect.php');
-                   $query ="SELECT id,itemname,unit FROM msitementry order by id ASC";
+                 <select name="main_store_item_id" required id="minimal_input" class="form-control">
+                  <option value="">Choose discription of Item</option>
+                  <?php 
+                   $query ="SELECT * FROM msitementry where code_mini=1";
                    $result = $conn->query($query);
                    if($result->num_rows> 0){
                    while($optionData=$result->fetch_assoc()){
-                    $id =$optionData['id'];
-                      $option =$optionData['itemname'];
-                      $uom=$optionData['unit'];
-                    ?>
-                    <option value="<?=$id?>"><?php echo $option;echo " /"; echo $uom;echo "/ id=";echo $id; ?> </b> </option>
-                    <?php
-                    }}
+                   $option =$optionData['itemname'];
+                   $id =$optionData['id'];
+                   $uom = $optionData['unit'];
+                   ?> 
+                 <option value="<?=$id?>"><?php echo $option;echo " /"; echo $uom;echo "/ id=";echo $id; ?> </b> </option>
+                  <div class="form-group">
+                   <?php
+                   }}
                    ?>
                 </select>
               </div>
-              <div class="form-group row" >
-              
-                 <label for="inputPassword3" class="col-sm-2 col-form-label">Quantity</label>
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Quantity</label>
                   <input type="float" required name="quantity" required class="form-control" id="inputPassword3" placeholder="Quantity">
                
-              </div>
-             
-              <div class="form-group row">
-              
-              
-                 <label for="inputPassword3" class="col-sm-2 col-form-label">Date</label>
-                  <input type="date" required name="date" class="form-control">
-            
-              </div>
-              <div class="form-group row">
-                 <label for="inputPassword3">Approved By</label>
-                  <input type="text" name="checked_by" value="<?php echo $_SESSION['name']; ?>" readonly class="form-control">
-              </div>
-              <div class="form-group row">
-              <label for="inputPassword3"> Received Departement</label>
-                 <select name="received_by" required id="minimal_input" class="form-control" required >
-                 <option value="">Select......</option>
-                  <option value="Electric">Electric</option>
-                  <option value="Construction">Construction</option>
-                  <option value="Production">Production</option>
-                  <option value="Metal">Metal</option>
-                  <option value="Flower_pot">Flower_pot</option> 
-                  <option value="Genda_getema">Genda_getema</option>
-                  <option value="Technic">Technic</option>
-                  <option value="Finishing">Finishing</option>
-                  <option value="sales">sales</option>
-                  <option value="Nibret_astedader">Nibret_ stedader</option>
-                  <option value="Mekanisa">Mekanisa</option>
-                  <option value="Transfer">Transfer</option>
-                  <option value="other">other</option>
-                 </select>
-              </div>
-              <div class="form-group row">
-               <label for="inputPassword3" class="col-sm-2 col-form-label">Remark</label>
-                <input type="text" name="remark" class="form-control"  placeholder="type here ..cause.. and any other reason">
-               </div>
-               <br>
-               <br>
-               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" name="main_store_out" class="btn btn-primary float-right">Save changes</button>
-            </div>
-            
-           
-           </form>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-  </div>
-  <!-- in modal -->
-  <div class="modal fade" id="modal-in">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header" style="color:blue">
-              <h4 class="modal-title">Item Add</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-             <form class="form-horizontal" action="process.php" method="POST">
-              <div class="card-body">
-               <div class="form-group row"  id="form-group">
-               <label for="inputStatus">Description of Item</label>
-                 <select class="form-control" name="id" required id="inputName">
-                 
-                   <?php 
-                   include('connect.php');
-                   $query ="SELECT id,itemname,unit FROM msitementry order by id ASC";
-                   $result = $conn->query($query);
-                   if($result->num_rows> 0){
-                   while($optionData=$result->fetch_assoc()){
-                    $id =$optionData['id'];
-                      $option =$optionData['itemname'];
-                      $uom=$optionData['unit'];
-                    ?>
-                    <option value="<?=$id?>"><?php echo $option;echo " /"; echo $uom;echo "/ id=";echo $id; ?> </b> </option>
-                    <?php
-                    }}
-                   ?>
-                </select>
-              </div>
-              <div class="form-group row">
-              <label for="inputStatus">Quantity</label>
-                  <input type="float" required name="quantity" required class="form-control" id="inputName" placeholder="Quantity">
-                
               </div>
               <div class="form-group row">
                 <label for="inputPassword3" class="col-sm-2 col-form-label">Date</label>
                   <input type="date" required name="date" class="form-control">
-                
-              </div>
-              <div class="form-group row">
-              <label for="inputStatus">Origin</label>
-                 <select name="origin" required id="minimal_input" class="form-control" required>
-                 <option value="China">China</option>
-                   <option value="Dubai">Dubai</option>
-                   <option value="India">India</option>
-                   <option value="Local">locals</option>
-                 </select>
-              </div>
-              <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Received by</label>
-                  <input type="text" name="received_by" value="<?php echo $_SESSION['name']; ?>" readonly class="form-control">
               
               </div>
-            </div>
-            <div class="modal-footer justify-content-between">
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Requested By</label>
+                  <input type="text" name="checked_by" readonly value="<?php echo $_SESSION['name']; ?>" class="form-control"  placeholder="checked_by">
+              </div>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" name="savefile" class="btn btn-primary">Save changes</button>
+              <button type="submit" name="notification" class="btn btn-primary float-right">Save changes</button>
             </div>
            </form>
           </div>
@@ -354,222 +251,82 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         <!-- /.modal-dialog -->
       </div>
 <!-- delete modal -->
-   <div class="modal fade" id="modal-edit">
+   <!-- out modal -->
+   <div class="modal fade" id="modal-out">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Item Edit</h4>
+            <div class="modal-header" style="color:blue">
+              <h4 class="modal-title">Paint Mini store Unit Convertion Pages</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-            <!-- here you can edit the data of fiber main store -->
-             <form action="process.php" method="POST">
-                    <div class="modal-body">
-                        <input type="hidden" name="id" id="id">
-                        <div class="form-group">
-                            <label>Description of Item</label>
-                            <input type="text" name="itemname" id="category_id" class="form-control" readonly>
-                        </div>
-                        <div class="form-group">
-                        <label>Edited By</label>
-                            <input type="text" name="name"  value="<?php echo $_SESSION['name']; ?>" class="form-control"  readonly>
-                        </div>
-                      
-                        <div class="form-group">
-                            <label> Uom </label>
-                            <input type="text" name="uom" id="uom" class="form-control" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label> Quantity </label>
-                            <input type="text" name="quantity" id="quantity" class="form-control" >
-                        </div>
-                        <div class="form-group">
-                            <label>Date</label>
-                            <input type="date" name="date" id="date" class="form-control"  required>
-                        </div>
-                        <div class="form-group">
-                            <label>Remark</label>
-                            <input type="input" name="remark" id="remark" class="form-control" placeholder="pls type for what you edit"  required>
-                        </div>
-                    </div>
+             <form class="form-horizontal" action="process.php" method="POST">
+              <div class="card-body">
+               <div class="form-group row"  id="minimal_div">
+                <label for="inputEmail3">Discription of Item</label>
+                 <select name="main_store_item_id" required id="minimal_input" class="form-control">
+                  <option value="">Choose Discription of Item</option>
+                   <?php 
+                   include('connect.php');
+                    $query ="SELECT * FROM msitementry where code_mini='1'";
+                     $result = $conn->query($query);
+                     if($result->num_rows> 0){
+                     while($optionData=$result->fetch_assoc()){
+                     $option =$optionData['itemname'];
+                     $id =$optionData['id'];
+                     $uom = $optionData['unit'];
+                     $query1 ="SELECT quantity FROM paint_mini_item where paint_main_id ='$id'";;
+                     $result1 = $conn->query($query1);
+                    $b1=$result1->fetch_assoc();
+                    $b=$b1['quantity'];
+
+                     ?>  
+                  
+                   <option value="<?=$id?>"><?php echo $option;echo " /";echo "/ id=";echo $id; echo "/ current balance=";echo $b;?> </b> </option>
+                     <div class="form-group">
+                    <?php
+                    }}
+                   ?>
+                </select>
+              </div>
+             
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">New Balance</label>
+                  <input type="text" name="quantity" class="form-control"  placeholder="New Balalance">
+              </div>
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">New Unit</label> 
+                  <input type="float" required name="unit"  value="Kg" readonly class="form-control" placeholder="Balance">
+              </div>
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Date</label>
+                  <input type="date" required name="date" class="form-control">
+              </div>
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Checked_by</label>
+                  <input type="text" value="<?php echo $_SESSION['name']; ?>" readonly name="checked_by" class="form-control">
+              </div>
+              <div class="form-group row">
+                <label style=" color:red">Notes,Please don't convert Kg to Kg</label>
+                
+              </div>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" name="unitconvert" class="btn btn-primary float-right">Save changes</button>
             
             </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" name="update" class="btn btn-primary">Save changes</button>
+            <div class="card-footer">
+             
             </div>
-            </form>
+           </form>
           </div>
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-   </div>
-      <!-- /.modal -->
-   <!-- notification modal -->
-   <div class="modal fade" id="modal-notification">
-        <div class="modal-dialog modal-xl">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Edit Paint Main Store Data</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-            <!-- here you can edit the data of fiber main store -->
-            <?php
-                $connection = mysqli_connect("localhost","root","");
-                $db = mysqli_select_db($connection, 'ssms');
-                $query = "SELECT * FROM notification";
-                $query_run = mysqli_query($connection, $query);
-            ?>
-             <table id="example" class="table table-bordered table-striped">
-                  <thead>
-                  <tr>
-                  <th>Item Id</th>
-                    <th>discription Of Item</th>
-                    <th>Unit</th>
-                    <th>Quantity Requested</th>
-                    <th>Store quantity</th>
-                    <th>Received by</th>
-                    <th>Checked by</th>
-                    <th>Date</th>
-                    <th>Approve</th>
-                  </tr>
-                  </thead>
-                  <?php
-                if($query_run)
-                {
-                    $i=1;
-                    foreach($query_run as $row)
-                    {
-                        include('connect.php');
-                        $item_id = $row['item_id'];
-                        $query ="SELECT * FROM main_store_item WHERE id =$item_id";
-                        $result = $conn->query($query);
-                        if($result->num_rows> 0){
-                            while($optionData=$result->fetch_assoc()){
-                            $option =$optionData['item_name'];
-                            $quantity=$optionData['quantity'];
-                        }
-                    }
-                    ?>
-                        <tbody>
-                            <tr>
-                                <td> <?php echo $row['id'] ?> </td>
-                                <td> <?php echo $option; ?> </td>
-                                <td> <?php echo $row['item_id'] ?></td>
-                                <td> <?php echo $row['uom']; ?> </td>
-                                <td> <?php echo $row['quantity']; ?> </td>
-                                <td> <?php echo $quantity; ?> </td>
-                                <td> <?php echo $row['received_by']; ?> </td>
-                                <td> <?php echo $row['checked_by']; ?> </td>
-                                <td> <?php echo $row['date']; ?> </td>
-                                <td>
-                                    <?php
-                                if((int)$quantity==0)
-                                {
-                                    ?>
-                                   <button type="button" class="btn btn-success" disabled> Approve </button>
-                                      <?php
-                                } 
-                                else if((int)$quantity!=0)
-                                {
-                                    ?>
-                                   <button type="button" class="btn btn-success approvebtn" data-toggle="modal" data-target="#modal-approve"> Approve </button>
-                                   <td>
-                                      <?php
-                                }
-                                ?>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <?php    
-                        $i++;       
-                    }
-                }
-                else 
-                {
-                    echo "No Record Found";
-                }
-            ?>
-      </table>
-
-            </div>
-            <div class="modal-footer justify-content-between">
-              <a type="button" class="btn btn-default" data-dismiss="modal"></a>
-              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-            </form>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-   </div>
-     <!-- Approve modal -->
-   <div class="modal fade" id="modal-approve" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Approve Requisition of Mini Store</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-            <!-- here you can edit the data of fiber main store -->
-             <form action="process.php" method="POST">
-                    <div class="modal-body">
-                        <input type="hidden" name="id" id="approve_id">
-                        <div class="form-group">
-                            <label> Item_Id </label>
-                            <input type="text" name="item_id" id="item_id" readonly class="form-control" >
-                        </div>
-                        <div class="form-group">
-                            <label> Uom </label>
-                            <input type="text" name="uom" id="approve_uom" readonly class="form-control" >
-                        </div>
-                        <div class="form-group">
-                            <label> Quantity </label>
-                            <input type="text" name="quantity" readonly id="approve_quantity" class="form-control" disable >
-                        </div>
-                        <div class="form-group">
-                            <label> Date </label>
-                            <input type="date" name="date" id="approve_date" class="form-control" >
-                        </div>
-                        <div class="form-group">
-                            <label> Ref_No </label>
-                            <input type="text" name="ref_no" id="ref_no" class="form-control" >
-                        </div>
-                        <div class="form-group">
-                            <label> Approved_by </label>
-                            <input type="text" value="<?php echo $_SESSION['name']; ?>"  readonly name="approved_by" id="approved_by" class="form-control" >
-                        </div>
-                        <div class="form-group">
-                            <label> checked_by </label>
-                            <input type="text" name="checked_by" id="checked_by" readonly class="form-control" >
-                        </div>
-                        <div class="form-group">
-                            <label> Received_by </label>
-                            <input type="text" name="received_by" id="received_by" readonly class="form-control" >
-                        </div>
-                    </div>
-             </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" name="approve" class="btn btn-primary">Approve</button>
-            </div>
-            </form>
-          </div>
-       </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-   </div>
-      <!-- End of Approve Modal --> 
+  </div>
+ 
+   
+  
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
   <form action="" method="POST">
@@ -590,14 +347,12 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
             ?>
          
             <?php
-            $x="SELECT * from main_history WHERE date='$date'";
+            $x="SELECT * from paintmini_history WHERE date='$date'";
             $re=mysqli_query($conn,$x) or die(mysqli_error($conn));
             $r=mysqli_fetch_assoc($re);  
             if($r!=null){
-                $y="SELECT * from msitementry Order by itemname Asc";
+                $y="SELECT * from paint_mini_item Order by id Asc";
                $yy= mysqli_query($conn,$y) or die(mysqli_error($conn));
-            
-
                 ?>
                      <section class="content-header">
       <div class="container-fluid">
@@ -621,9 +376,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
               <?php
                 $connection = mysqli_connect("localhost","root","");
                 $db = mysqli_select_db($connection, 'ssms');
-                $sql =  "SELECT * FROM main_history WHERE date='$date'";
-                $result=mysqli_query($connection,$sql);
-                $query = "SELECT * FROM main_history WHERE date='$date'";
+                $query = "SELECT * FROM paintmini_history WHERE date='$date'";
                 $query_run = mysqli_query($connection, $query);
             ?>
               <div class="card-body">
@@ -647,6 +400,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
             foreach($query_run as $row)
             {
               $item_id = $row['paint_main_id'];
+              $unit=$row['unit'];
                         $query ="SELECT * FROM msitementry WHERE id =$item_id";
                         $result = $conn->query($query);
                         if($result->num_rows> 0){

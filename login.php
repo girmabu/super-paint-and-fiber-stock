@@ -85,6 +85,42 @@ if (isset($_POST['signin'])) {
      //! Session data can be hijacked. Never store personal data such as password, security pin, credit card numbers other important data in $_SESSION
      header('location: pages/Chemical/chem_index.php?user_id=' . $user_id);
    }
+   else if($department==4)
+  {
+    $_SESSION['id'] = $user_id;       // Storing the value in session
+    $_SESSION['name'] = $full_name;   // Storing the value in session
+    $_SESSION['username'] = $user_name; // Storing the value in session
+    $_SESSION['role'] = $role; // Storing the value in session
+     //! Session data can be hijacked. Never store personal data such as password, security pin, credit card numbers other important data in $_SESSION
+     header('location: pages/Paint_main/Paint_main.php?user_id=' . $user_id);
+   }
+   else if($department==5)
+   {
+     $_SESSION['id'] = $user_id;       // Storing the value in session
+     $_SESSION['name'] = $full_name;   // Storing the value in session
+     $_SESSION['username'] = $user_name; // Storing the value in session
+     $_SESSION['role'] = $role; // Storing the value in session
+      //! Session data can be hijacked. Never store personal data such as password, security pin, credit card numbers other important data in $_SESSION
+      header('location: pages/Pant_mini/Paint_mini.php?user_id=' . $user_id);
+    }
+    else if($department==6)
+    {
+      $_SESSION['id'] = $user_id;       // Storing the value in session
+      $_SESSION['name'] = $full_name;   // Storing the value in session
+      $_SESSION['username'] = $user_name; // Storing the value in session
+      $_SESSION['role'] = $role; // Storing the value in session
+       //! Session data can be hijacked. Never store personal data such as password, security pin, credit card numbers other important data in $_SESSION
+       header('location: pages/Pant_mini_mini/Paint_mini_mini.php?user_id=' . $user_id);
+     }
+     else if($department==7)
+     {
+       $_SESSION['id'] = $user_id;       // Storing the value in session
+       $_SESSION['name'] = $full_name;   // Storing the value in session
+       $_SESSION['username'] = $user_name; // Storing the value in session
+       $_SESSION['role'] = $role; // Storing the value in session
+        //! Session data can be hijacked. Never store personal data such as password, security pin, credit card numbers other important data in $_SESSION
+        header('location: pages/PaintRMbalance/rmbalalnce.php?user_id=' . $user_id);
+      }
   else {
     header('location: login.php');
   }
