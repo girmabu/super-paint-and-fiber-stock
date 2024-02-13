@@ -172,158 +172,8 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
   </aside>
   <!-- Content Wrapper. Contains page content -->
   <!-- out modal -->
-  <div class="modal fade" id="modal-out">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header" style="color:blue">
-              <h4 class="modal-title">Item Out from  Paint Main Store</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-             <form class="form-horizontal" action="process.php" method="POST">
-              <div class="card-body">
-               <div class="form-group row"  id="minimal_div">
-                <label for="inputEmail3">Discription of Item</label>
-                <select class="form-control" name="id" required id="inputName">
-                 
-                   <?php 
-                   include('connect.php');
-                   $query ="SELECT id,itemname,unit FROM msitementry order by id ASC";
-                   $result = $conn->query($query);
-                   if($result->num_rows> 0){
-                   while($optionData=$result->fetch_assoc()){
-                    $id =$optionData['id'];
-                      $option =$optionData['itemname'];
-                      $uom=$optionData['unit'];
-                    ?>
-                    <option value="<?=$id?>"><?php echo $option;echo " /"; echo $uom;echo "/ id=";echo $id; ?> </b> </option>
-                    <?php
-                    }}
-                   ?>
-                </select>
-              </div>
-              <div class="form-group row" >
-              
-                 <label for="inputPassword3" class="col-sm-2 col-form-label">Quantity</label>
-                  <input type="float" required name="quantity" required class="form-control" id="inputPassword3" placeholder="Quantity">
-               
-              </div>
-             
-              <div class="form-group row">
-              
-              
-                 <label for="inputPassword3" class="col-sm-2 col-form-label">Date</label>
-                  <input type="date" required name="date" class="form-control">
-            
-              </div>
-              <div class="form-group row">
-                 <label for="inputPassword3">Approved By</label>
-                  <input type="text" name="checked_by" value="<?php echo $_SESSION['name']; ?>" readonly class="form-control">
-              </div>
-              <div class="form-group row">
-              <label for="inputPassword3"> Received Departement</label>
-                 <select name="received_by" required id="minimal_input" class="form-control" required >
-                 <option value="">Select......</option>
-                  <option value="Electric">Electric</option>
-                  <option value="Construction">Construction</option>
-                  <option value="Production">Production</option>
-                  <option value="Metal">Metal</option>
-                  <option value="Flower_pot">Flower_pot</option> 
-                  <option value="Genda_getema">Genda_getema</option>
-                  <option value="Technic">Technic</option>
-                  <option value="Finishing">Finishing</option>
-                  <option value="sales">sales</option>
-                  <option value="Nibret_astedader">Nibret_ stedader</option>
-                  <option value="Mekanisa">Mekanisa</option>
-                  <option value="Transfer">Transfer</option>
-                  <option value="other">other</option>
-                 </select>
-              </div>
-              <div class="form-group row">
-               <label for="inputPassword3" class="col-sm-2 col-form-label">Remark</label>
-                <input type="text" name="remark" class="form-control"  placeholder="type here ..cause.. and any other reason">
-               </div>
-               <br>
-               <br>
-               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" name="main_store_out" class="btn btn-primary float-right">Save changes</button>
-            </div>
-            
-           
-           </form>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-  </div>
+
   <!-- in modal -->
-  <div class="modal fade" id="modal-in">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header" style="color:blue">
-              <h4 class="modal-title">Item Add</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-             <form class="form-horizontal" action="process.php" method="POST">
-              <div class="card-body">
-               <div class="form-group row"  id="form-group">
-               <label for="inputStatus">Description of Item</label>
-                 <select class="form-control" name="id" required id="inputName">
-                 
-                   <?php 
-                   include('connect.php');
-                   $query ="SELECT id,itemname,unit FROM msitementry order by id ASC";
-                   $result = $conn->query($query);
-                   if($result->num_rows> 0){
-                   while($optionData=$result->fetch_assoc()){
-                    $id =$optionData['id'];
-                      $option =$optionData['itemname'];
-                      $uom=$optionData['unit'];
-                    ?>
-                    <option value="<?=$id?>"><?php echo $option;echo " /"; echo $uom;echo "/ id=";echo $id; ?> </b> </option>
-                    <?php
-                    }}
-                   ?>
-                </select>
-              </div>
-              <div class="form-group row">
-              <label for="inputStatus">Quantity</label>
-                  <input type="float" required name="quantity" required class="form-control" id="inputName" placeholder="Quantity">
-                
-              </div>
-              <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Date</label>
-                  <input type="date" required name="date" class="form-control">
-                
-              </div>
-              <div class="form-group row">
-              <label for="inputStatus">Origin</label>
-                 <select name="origin" required id="minimal_input" class="form-control" required>
-                 <option value="China">China</option>
-                   <option value="Dubai">Dubai</option>
-                   <option value="India">India</option>
-                   <option value="Local">locals</option>
-                 </select>
-              </div>
-              <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Received by</label>
-                  <input type="text" name="received_by" value="<?php echo $_SESSION['name']; ?>" readonly class="form-control">
-              
-              </div>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" name="savefile" class="btn btn-primary">Save changes</button>
-            </div>
-           </form>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-  </div>
    <!-- /.Delete modal -->
    <div class="modal fade" id="modal-delete">
         <div class="modal-dialog">
@@ -606,7 +456,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                     while( $i1=mysqli_fetch_assoc($in1)){$i=$i+$i1['quantity'];}
                    }
                    else{$o=0;}
-                   $out="SELECT quantity from main_out WHERE paint_main_id='$item_id' and date='$date' and reqdepartment='3'";//for paint mini in
+                   $out="SELECT quantity from paintmini_mini_out WHERE paint_main_id='$item_id' and date='$date'";//out from paint mini mini
                    $out1=mysqli_query($conn,$out) or die(mysqli_error($conn));
                    if(mysqli_num_rows($out1)>0){
                     while($ot1=mysqli_fetch_assoc($out1)){$o=$o+$ot1['quantity'];}
@@ -616,6 +466,8 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                    $result="INSERT INTO paintmini_mini_hostory (paint_main_id,unit,input,output,balance,date) 
                    VALUES ('$item_id','$unit','$i','$o','$balance','$date')";
                    $rs=mysqli_query($conn,$result) or  die(mysqli_error($conn));
+                   $i=0;
+                   $o=0;
 
                 }
 
@@ -657,6 +509,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
             foreach($query_run as $row)
             {
               $item_id = $row['paint_main_id'];
+             
                         $query ="SELECT * FROM msitementry WHERE id =$item_id";
                         $result = $conn->query($query);
                         if($result->num_rows> 0){
@@ -665,13 +518,13 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                             $stmt="SELECT unit from paintmini_mini_item WHERE paint_main_id='$item_id' ";
                             $st1=mysqli_query($conn,$stmt) or die(mysqli_error($conn));
                             $st111=mysqli_fetch_assoc($st1);
-                            $unit=$st111['unit'];
+                           
                              }
                            }
         ?>  
        <tr>
        <td> <?php echo $option ?> </td>
-         <td> <?php echo $unit ?> </td>
+         <td> <?php echo "Kg" ?> </td>
          <td> <?php echo $row['input']; ?> </td>
          <td> <?php echo $row['output']; ?> </td>
          <td> <?php echo $row['balance']; ?> </td>

@@ -380,6 +380,8 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                    else{$i=0;}
                    $result="INSERT INTO paintmini_history (paint_main_id,unit,input,output,balance,date) VALUES ('$item_id','$unit','$i','$o','$balance','$date')";
                    $rs=mysqli_query($conn,$result) or  die(mysqli_error($conn));
+                   $i=0;
+                   $o=0;
 
                 }
 

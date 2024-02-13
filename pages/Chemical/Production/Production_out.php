@@ -778,7 +778,7 @@
 
                                                                                                         /////////////////FIBER AND WOVEN SUMMARY------------------
                                                                                                         
-                                                                                                        $insert_fiber_summary = "SELECT * FROM fiber_summary WHERE ID =$ITEM_ID";
+                                                                                                        $insert_fiber_summary = "SELECT * FROM fiber_summary WHERE FORM_ID =$ITEM_ID";
                                                                                                         $result133 = $conn->query($insert_fiber_summary);
 
                                                                                                         while ($option133 = $result133->fetch_assoc()) {
@@ -800,10 +800,10 @@
 
 
 
-                                                                                                        $update_fiber_summary = "UPDATE fiber_summary SET STOCK_IN = '$IN_BALANCE' , STOCK_OUT='$S_BALANCE' , R_DATE='$DATE', P_BALANCE='$f_t_pc' WHERE ID ='$ITEM_ID' AND ITEM='FIBER'";
+                                                                                                        $update_fiber_summary = "UPDATE fiber_summary SET STOCK_IN = '$IN_BALANCE' , STOCK_OUT='$S_BALANCE' , R_DATE='$DATE', P_BALANCE='$f_t_pc' WHERE FORM_ID ='$ITEM_ID' AND ITEM='FIBER'";
                                                                                                         $query_run134 = mysqli_query($conn, $update_fiber_summary);
 
-                                                                                                        $update_woven_summary = "UPDATE fiber_summary SET STOCK_IN = '$IN_BALANCE' , STOCK_OUT='$S_BALANCE' , R_DATE='$DATE', P_BALANCE='$w_t_pc' WHERE ID ='$ITEM_ID' AND ITEM='WOVEN'";
+                                                                                                        $update_woven_summary = "UPDATE fiber_summary SET STOCK_IN = '$IN_BALANCE' , STOCK_OUT='$S_BALANCE' , R_DATE='$DATE', P_BALANCE='$w_t_pc' WHERE FORM_ID ='$ITEM_ID' AND ITEM='WOVEN'";
                                                                                                         $query_run134 = mysqli_query($conn, $update_woven_summary);
 
 

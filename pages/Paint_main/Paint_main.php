@@ -42,7 +42,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
           <button  type="submit" class="fa fa-save" aria-hidden="true"  style=" border:none" name="save"> save</button>
         </form>
         </a>
-         </li>
+      </li>
 
  
       <li class="breadcrumb-item">
@@ -275,7 +275,6 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                <div class="form-group row"  id="form-group">
                <label for="inputStatus">Description of Item</label>
                  <select class="form-control" name="id" required id="inputName">
-                 
                    <?php 
                    include('connect.php');
                    $query ="SELECT id,itemname,unit FROM msitementry order by id ASC";
@@ -288,13 +287,14 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                     ?>
                     <option value="<?=$id?>"><?php echo $option;echo " /"; echo $uom;echo "/ id=";echo $id; ?> </b> </option>
                     <?php
-                    }}
+                    }
+                  }
                    ?>
                 </select>
               </div>
               <div class="form-group row">
               <label for="inputStatus">Quantity</label>
-                  <input type="float" required name="quantity" required class="form-control" id="inputName" placeholder="Quantity">
+                  <input type="number" step="any" required name="quantity" required class="form-control" id="inputName" placeholder="Quantity">
                 
               </div>
               <div class="form-group row">

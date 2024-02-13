@@ -616,19 +616,15 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                    $out="SELECT quantity from main_out WHERE paint_main_id='$item_id' and date='$date'";
                    $out1=mysqli_query($conn,$out) or die(mysqli_error($conn));
                    if(mysqli_num_rows($out1)>0){
-                    while($ot1=mysqli_fetch_assoc($out1)){$o=$o+$ot1['quantity'];}
-                    
-                    
+                    while($ot1=mysqli_fetch_assoc($out1)){$o=$o+$ot1['quantity'];}                    
                    }
                    else{$o=0;}
-                   $result="INSERT INTO main_history (paint_main_id,input,output,balance,date) VALUES ('$item_id','$i','$o','$balance','$date')";
+                   $result="INSERT INTO main_history (paint_main_id,input,output,balance,date)
+                    VALUES ('$item_id','$i','$o','$balance','$date')";
                    $rs=mysqli_query($conn,$result) or  die(mysqli_error($conn));
-
+                   $i=0;
+                   $o=0;
                 }
-
-                $dt="INSERT INTO maindateholder (date) VALUES ('$date')";
-                $dt1=mysqli_query($conn,$dt) or die(mysqli_error($conn));
-
                 ?>
 
 <section class="content">

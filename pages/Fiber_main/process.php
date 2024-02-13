@@ -201,6 +201,7 @@ if (isset($_POST['main_store_in']))
         while($optionData=$result->fetch_assoc()){
         $option =$optionData['quantity'];
         $balance = $option+$quantity;
+        $category_id= $optionData['category_id'];
         $uom=$optionData['uom'];
     }
     }

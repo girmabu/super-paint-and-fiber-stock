@@ -107,7 +107,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
             header('location: ../../login.php');
           }
           ?>
-            <form action="" method="post">
+        <form action="" method="post">
         <button type="submit" name='signout' class=" btn btn-warning mb-3"> Sign Out</button>
       </form>
       </a>
@@ -115,8 +115,6 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
     </ul>
   </nav>
   <!-- /.navbar -->
-
-  <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="" class="brand-link">
@@ -174,10 +172,6 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
     <!-- /.sidebar -->
   </aside>
   <!-- Content Wrapper. Contains page content -->
-
-
-  
-  <!-- out modal -->
   <div class="modal fade" id="modal-out">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -374,8 +368,6 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         <!-- /.modal-dialog -->
    </div>
       <!-- /.modal -->
-  
-   <!-- End of Approve Modal -->
    <div class="modal fade" id="modal-chem-notification">
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
@@ -785,7 +777,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
             </ol>
           </div>
         </div>
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
         <?php
         $dbName = "ssms";

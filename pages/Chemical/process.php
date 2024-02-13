@@ -306,4 +306,47 @@ if(isset($_POST['chem_out']))
     <?php
          }
 }
+if ( isset( $_POST[ 'fiber_out' ] ) )
+ {
+
+    $item_id = $_POST[ 'item_id' ];
+    $quantity = $_POST[ 'quantity'];
+
+    $qur="SELECT * FROM chemical_store_item where item_id='$item_id'";
+    $query_r= mysqli_query( $conn, $qur );
+    while ($optionData = $query_r->fetch_assoc() ) {
+        $qty=$optionData['quantity'];
+        $qury="SELECT * FROM main_store_item where id='$item_id'";
+        $query_run= mysqli_query( $conn, $qury );
+        while ($optionDat = $query_run->fetch_assoc() ) {
+         $convertion=$optionDat['convertion'];
+       
+    }
+    }
+    $update_qty=(double)$quantity*(double)$convertion;
+    echo $quantity;
+    // $qury="SELECT * FROM general_formulation where ID='$form_id'";
+    // $query_run = mysqli_query( $conn, $qury );
+    // while ($optionData = $query_run->fetch_assoc() ) {
+    //     $w_400=$optionData['W_400'];
+    //     $f_450=$optionData['F_450'];
+    // }
+    // $wov_kg=(double)$w_400*(double)$woven_pcs;
+    // $fib_kg=(double)$f_450*(double)$fiber_pcs;
+    // echo $fib_kg;
+    // $query = "UPDATE profiber_balanceupdated SET WOVEN_BALANCE_PCS='$woven_pcs', WOVEN_BALANCE_KG='$wov_kg'
+    // ,FIBER_BALANCE_PCS='$fiber_pcs',FIBER_BALANCE_KG='$fib_kg' WHERE ID='$item_id'";
+
+    // $query_run = mysqli_query( $conn, $query );
+
+    if ( $q )
+    {
+        ?>
+        <script>
+             alert("update succesfully,thank you");
+         window.location="Fiber_balance.php";
+        </script>
+        <?php
+    } 
+}
 ?>

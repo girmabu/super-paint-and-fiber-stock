@@ -1030,7 +1030,6 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
           $tc=0;
             foreach($query_run as $row)
             {
-            
         ?>  
        <tr>
     <?php

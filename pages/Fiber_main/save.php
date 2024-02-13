@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rodas Fiber Main Stock</title>
+  <title>Rodas Paint Main Stock</title>
   <?php session_start();       // Start the session ?>   
   <?php
 if (!isset($_SESSION['id'])) {         // condition Check: if session is not set. 
@@ -40,7 +40,27 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         <i class="fa fa-home" aria-hidden="true"></i>home
         </a>
          </li>
+
+ 
+      <li class="breadcrumb-item">
+        <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-in">
+        <i class="fa fa-cart-plus" aria-hidden="true"></i>In
+        </a>
+      </i>
       </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-out">
+        <i class="fa fa-outdent" aria-hidden="true"></i>out
+        </a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="#" class="nav-link">
+        <i class="fa fa-history" aria-hidden="true"> History</i>
+        </a>
+      </li>
+
+
+    
     </ul>
      
 
@@ -86,8 +106,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
       </form>
       </a>
       </li>
-        </ul>
-            
+    </ul>
   </nav>
   <!-- /.navbar -->
 
@@ -96,7 +115,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
     <!-- Brand Logo -->
     <a href="../../index3.html" class="brand-link">
       <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Super Fiber</span>
+      <span class="brand-text font-weight-light">Rodas Paint</span>
     </a>
 
     <!-- Sidebar -->
@@ -151,61 +170,75 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
     </div>
     <!-- /.sidebar -->
   </aside>
-  <!-- Content Wrapper. Contains page content -->
-  <!-- out modal -->
 
-      <!-- End of Approve Modal --> 
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-         <form action="" method="POST"  style="item-align:center;margin-left:200px">
-                <select name="category_id" required id="item" class="control-group">
-                    <option value="">ITEM</option>
-                    <?php
-                    include('connect.php');
-                    $query = "SELECT * FROM category";
-                    $result = $conn->query($query);
-                    if ($result->num_rows > 0) {
-                        while ($optionData = $result->fetch_assoc()) {
-                            $option = $optionData['category_name'];
-                            $category_id = $optionData['id'];
-                    ?>
-                            <option value="<?php echo $category_id; ?>"><?php echo $option; ?> </option>
-                    <?php
-                        }
-                    }
-                    ?>
-                </select>
-                <input type="date" name="date" id="date_picker" required></input>
-                <!-- <input type="TEXT" id="UOM" name="UOM" placeholder="UOM" required></input> -->
-                <button type="submit" name="choose" id="checkk" class="btn btn-primary">Submit</button>
-             </form>
+  
         <?php
-        if(isset($_POST['choose']))
+        if(isset($_POST['save']))
         {
             $date=$_POST['date'];
             $category_id=$_POST['category_id'];
             ?>
-            <?php
-            $x="SELECT * from fiber_main_history WHERE date='$date'";
-            $re=mysqli_query($conn,$x) or die(mysqli_error($conn));
-            $r=mysqli_fetch_assoc($re);  
-            if($r!=null){
-                $y="SELECT * from main_store_item Order by item_name Asc";
-               $yy= mysqli_query($conn,$y) or die(mysqli_error($conn));
-            
-
-                ?>
-       <section class="content-header">
+              <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1><?=$date?> Fiber Store Report For <?=$option?></h1>
+            <h1><?=$date?> Fiber Store Transaction History </h1>
           </div>
-         
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="add.php"> add
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                </a></li>
+            </ol>
+          </div>
         </div>
       </div><!-- /.container-fluid -->
       
     </section>
+            <?php
+            // fiber store
+            $x="SELECT * from fiber_main_history WHERE date='$date' and category_id=$category_id";
+            $re=mysqli_query($conn,$x) or die(mysqli_error($conn));
+            $r=mysqli_fetch_assoc($re);  
+            // metal tecnic store
+            // $y="SELECT * from metal_tecnic WHERE date='$date' and category_id=$category_id";
+            // $ye=mysqli_query($conn,$y) or die(mysqli_error($conn));
+            // $tt=mysqli_fetch_assoc($ye);
+            // // end of metal tecnic store
+            // $metal="SELECT * from metal_tecnic WHERE date='$date' and category_id=$category_id";
+            // $met=mysqli_query($conn,$metal) or die(mysqli_error($conn));
+            // $metals=mysqli_fetch_assoc($met);
+
+
+            if($r==null){
+              $i=0;
+              $o=0;
+                $y="SELECT * from main_store_item where category_id=$category_id";
+               $yy= mysqli_query($conn,$y) or die(mysqli_error($conn));
+              while($val=mysqli_fetch_assoc($yy)){
+                    $item_id=$val['id'];
+                    $unit=$val['uom'];
+                    $balance=$val['quantity'];
+                    $in="SELECT quantity from main_store_item_in WHERE main_store_item_id='$item_id' and date='$date'";
+                   $in1=mysqli_query($conn,$in) or die(mysqli_error($conn));
+                   if(mysqli_num_rows($in1)>0){
+                    while( $i1=mysqli_fetch_assoc($in1)){$i=$i+$i1['quantity'];}
+                   }
+                   else{$i=0;}
+                   $out="SELECT outs from main_store_item_in WHERE main_store_item_id='$item_id' and date='$date'";
+                   $out1=mysqli_query($conn,$out) or die(mysqli_error($conn));
+                   if(mysqli_num_rows($out1)>0){
+                    while($ot1=mysqli_fetch_assoc($out1)){$o=$o+$ot1['outs'];}                    
+                   }
+                   else{$o=0;}
+                  
+                    $result="INSERT INTO fiber_main_history (main_store_id,input,category_id,output,balance,date)
+                    VALUES ('$item_id','$i','$category_id','$o','$balance','$date')";
+                   $rs=mysqli_query($conn,$result) or  die(mysqli_error($conn));
+                }
+                ?>
 
 <section class="content">
       <div class="container-fluid">
@@ -225,9 +258,9 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                  <th>No</th>
-                  <th>Item</th>
-                    <th>UOM</th>
+                  <th> No</th>
+                  <th> Item</th>
+                    <th>Uom</th>
                     <th>In</th>
                     <th>Out</th>
                     <th>Balance</th>
@@ -237,7 +270,6 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                   <?php
          if($query_run)
          {
-          $i=1;
             foreach($query_run as $row)
             {
               $item_id = $row['main_store_id'];
@@ -251,8 +283,8 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                            }
         ?>  
        <tr>
-       <td> <?php echo $i++ ?> </td>
-       <td> <?php echo $option ?> </td>
+       <td> <?php echo $row['id'] ?> </td>
+         <td> <?php echo $option ?> </td>
          <td> <?php echo $unit ?> </td>
          <td> <?php echo $row['input']; ?> </td>
          <td> <?php echo $row['output']; ?> </td>
@@ -281,17 +313,9 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
             }
             else{
                 ?>
-                <div class="alert alert-danger" role="alert">
-  No Record Found here Please Try agian !!
+                <div class="alert alert-warning" role="alert">
+                This date aready saved,Please contact Administrator !!
 </div>
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2024 <a href="#">Stock Management System</a>.</strong> All rights reserved.
-  </footer>
-
-
                 <?php
             }
 
@@ -312,7 +336,12 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
     <!-- /.content -->
  
   <!-- /.content-wrapper -->
-
+  <footer class="main-footer">
+    <div class="float-right d-none d-sm-block">
+      <b>Version</b> 3.2.0
+    </div>
+    <strong>Copyright &copy; 2024 <a href="#">Stock Management System</a>.</strong> All rights reserved.
+  </footer>
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">

@@ -42,10 +42,14 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         </a>
       </i>
       <li class="nav-item d-none d-sm-inline-block">
-     
       <li class="breadcrumb-item">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-in">
         <i class="fa fa-cart-plus" aria-hidden="true"></i>In
+        </a>
+      </i>
+      <li class="breadcrumb-item">
+        <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-out">
+        <i class="fa fa-cart-plus" aria-hidden="true"></i>out
         </a>
       </i>
       </li>
@@ -230,8 +234,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
     </div>
     <!-- /.sidebar -->
   </aside>
-  <!-- Content Wrapper. Contains page content -->
-  <!-- out modal -->
+
   <!-- in modal -->
   <div class="modal fade" id="modal-in">
         <div class="modal-dialog modal-lg">
@@ -367,9 +370,69 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         </div>
         <!-- /.modal-dialog -->
   </div>
-      <!-- /.modal -->
    <!-- notification modal -->
-
+   <div class="modal fade" id="modal-out">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header" style="color:blue">
+              <h4 class="modal-title">Add Item To Stock</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+             <form class="form-horizontal" action="production_insert.php" method="POST">
+              <div class="card-body">
+               <div class="form-group row"  id="minimal_div">
+                <label for="inputEmail3"class="col-sm-2 col-form-label" id="label_div">Product Name</label>
+                 <select  name="item_id" required id="minimal_input" style="width:83% !important">
+                  <option value="">Select...</option>
+                  <?php 
+                   include('connect.php');
+                    $query ="SELECT id,item_id FROM chemical_store_item";
+                    $result = $conn->query($query);
+                     if($result->num_rows> 0){
+                    while($optionData=$result->fetch_assoc()){
+                      $item_id=$optionData['item_id'];
+                    $query1 ="SELECT * FROM main_store_item where id='$item_id'";
+                    $result1 = $conn->query($query1);
+                    while($optionData=$result1->fetch_assoc()){
+                      
+                    $option=$optionData['item_name'];
+                    $id=$optionData['id'];
+                     ?>
+                     <option value="<?php echo $id; ?>"><?php  echo $id; echo "----"; echo $option?> </option>
+                     <?php
+                     }
+                     }
+                    }
+                     ?>
+                </select>
+                </div>
+                <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Quantity</label>
+                 <div class="col-sm-10">
+                  <input type="double" required name="quantity" required class="form-control" id="FIBER_BALANCE_PCS" placeholder="Stock out(Kg)">
+                 </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Checked by</label>
+                 <div class="col-sm-10">
+                  <input type="text"value="<?php echo $_SESSION['name'] ?>" readonly name="checked_by" required class="form-control">
+                 </div>
+              </div>
+              </div>
+      
+           
+            <div class="card-footer">
+             <button type="submit" name="fiber_out" class="btn btn-block btn-outline-success btn-lg">Out</button>
+             <button type="submit"  class="btn btn-block btn-outline-danger btn-sm" data-dismiss="modal">Cancel</button>
+            </div>
+           </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+  </div>
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">

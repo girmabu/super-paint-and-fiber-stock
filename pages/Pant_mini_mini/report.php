@@ -36,28 +36,14 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
     
       <li class="nav-item d-none d-sm-inline-block">
          <li class="nav-item d-none d-sm-inline-block">
-         <a href="Paint_main.php" class="nav-link">
+         <a href="Paint_mini_mini.php" class="nav-link">
         <i class="fa fa-home" aria-hidden="true"></i>home
         </a>
          </li>
 
  
-      <li class="breadcrumb-item">
-        <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-in">
-        <i class="fa fa-cart-plus" aria-hidden="true"></i>In
-        </a>
-      </i>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-out">
-        <i class="fa fa-outdent" aria-hidden="true"></i>out
-        </a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">
-        <i class="fa fa-history" aria-hidden="true"> History</i>
-        </a>
-      </li>
+     
+  
 
 
     
@@ -142,7 +128,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
-                Main Store
+             Paint Mini Mini
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -622,9 +608,9 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
               <?php
                 $connection = mysqli_connect("localhost","root","");
                 $db = mysqli_select_db($connection, 'ssms');
-                $sql =  "SELECT * FROM main_history WHERE date='$date'";
+                $sql =  "SELECT * FROM paintmini_mini_hostory WHERE date='$date'";
                 $result=mysqli_query($connection,$sql);
-                $query = "SELECT * FROM main_history WHERE date='$date'";
+                $query = "SELECT * FROM paintmini_mini_hostory WHERE date='$date'";
                 $query_run = mysqli_query($connection, $query);
             ?>
               <div class="card-body">
@@ -648,12 +634,13 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
             foreach($query_run as $row)
             {
               $item_id = $row['paint_main_id'];
+              $unit=$row['unit'];
                         $query ="SELECT * FROM msitementry WHERE id =$item_id";
                         $result = $conn->query($query);
                         if($result->num_rows> 0){
                             while($optionData=$result->fetch_assoc()){
                             $option =$optionData['itemname'];
-                            $unit=$optionData['unit'];
+                         
                              }
                            }
         ?>  

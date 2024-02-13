@@ -88,7 +88,7 @@ if(isset($_POST['notification']))
 if(isset($_POST['approve_mininotification']))
 {
     include('connect.php');
-    $qty=0;
+    $cv=0;
     $id=$_POST['id'];
     $item_id = $_POST['item_id'];
     $uom = "Kg";
@@ -103,15 +103,15 @@ if(isset($_POST['approve_mininotification']))
     if($x != null)
     {$xx=$x['convertunit'];}
     else{$xx=1;}
-    $qty = (double)$_POST['quantity']*(double)$xx;
-    $query = "INSERT INTO paintmini_out (`quantity`,`date`,`reqdepartment`,`paint_main_id`,`checked_by`,`unit`)
-     VALUES ('$qty','$date','$req','$item_id','$approved_by','$uom')";
+    $cv = $_POST['quantity']*$xx;
+    $query = "INSERT INTO paintmini_out (`quantity`,`date`,`reqdepartment`,`paint_main_id`,`checked_by`,unit)
+     VALUES ('$quantity','$date','$req','$item_id','$approved_by','$uom')";
      $query1=mysqli_query($conn,$query) or die(mysqli_error($conn));
 
     $qty ="UPDATE paint_mini_item SET quantity=quantity-'$quantity'  WHERE paint_main_id ='$item_id' ";
     $qty1=mysqli_query($conn,$qty) or die(mysqli_error($conn));
 
-    $qt ="UPDATE paintmini_mini_item SET quantity=quantity WHERE paint_main_id='$item_id'";
+    $qt ="UPDATE paintmini_mini_item SET quantity=quantity+'$cv'  WHERE paint_main_id='$item_id'";
     $qt1=mysqli_query($conn,$qt) or die(mysqli_error($conn));
 
     $del="DELETE from paint_notification WHERE  item_id='$item_id'";

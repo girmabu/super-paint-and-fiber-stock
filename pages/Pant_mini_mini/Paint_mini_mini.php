@@ -56,6 +56,11 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         <i class="fa fa-outdent" aria-hidden="true"></i>AddExtra(Kg)
         </a>
       </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-test">
+        <i class="fa fa-outdent" aria-hidden="true"></i>out
+        </a>
+      </li>
       <?php
         $conn = new mysqli('localhost','root','','ssms');
         $result3 = mysqli_query($conn, "SELECT * FROM paint_notification"); 
@@ -240,6 +245,78 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         </div>
         <!-- /.modal-dialog -->
   </div>
+
+  <!-- out modal -->
+  <div class="modal fade" id="modal-test">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header" style="color:blue">
+              <h4 class="modal-title">Item Out from  Paint Mini Mini Store</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+             <form class="form-horizontal" action="process.php" method="POST">
+              <div class="card-body">
+               <div class="form-group row"  id="minimal_div">
+                <label for="inputEmail3">Discription of Item</label>
+                <select name="id" required id="minimal_input" class="form-control">
+                  <option value="">Choose Discription of Item</option>
+                   <?php 
+                   include('connect.php');
+                    $query ="SELECT * FROM msitementry where code_mini='1' or code_mini='2'";
+                     $result = $conn->query($query);
+                     if($result->num_rows> 0){
+                     while($optionData=$result->fetch_assoc()){
+                     $option =$optionData['itemname'];
+                     $id =$optionData['id'];
+                     $uom = $optionData['unit'];
+                     $query1 ="SELECT quantity FROM paintmini_mini_item where paint_main_id ='$id'";;
+                     $result1 = $conn->query($query1);
+                    $b1=$result1->fetch_assoc();
+                    $b=$b1['quantity'];
+
+                     ?>  
+                  
+                   <option value="<?=$id?>"><?php echo $option;echo " /";echo "/ id=";echo $id; echo "/ current balance=";echo $b;?> </b> </option>
+                     <div class="form-group">
+                    <?php
+                    }}
+                   ?>
+                </select>
+              </div>
+              <div class="form-group row" >
+              
+                 <label for="inputPassword3" class="col-sm-2 col-form-label">Quantity</label>
+                  <input type="float" required name="quantity" required class="form-control" id="inputPassword3" placeholder="Quantity">
+               
+              </div>
+             
+              <div class="form-group row">
+              
+              
+                 <label for="inputPassword3" class="col-sm-2 col-form-label">Date</label>
+                  <input type="date" required name="date" class="form-control">
+            
+              </div>
+              <div class="form-group row">
+                 <label for="inputPassword3">Approved By</label>
+                  <input type="text" name="checked_by" value="<?php echo $_SESSION['name']; ?>" readonly class="form-control">
+              </div>
+        
+               <br>
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" name="out" class="btn btn-primary float-right">Save changes</button>
+            </div>
+            
+           
+           </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+  </div>
+
   <!-- in modal -->
   <div class="modal fade" id="modal-request">
         <div class="modal-dialog modal-lg">

@@ -38,6 +38,30 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         </a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
+         <li class="nav-item d-none d-sm-inline-block">
+        <a href="#" class="nav-link">
+        <form action="save.php" method="POST" style="display:flex">
+          <select name="category_id" required id="minimal_input" class="form-control">
+                  <option value="">Select...</option>
+                   <?php 
+                    $sql = "SELECT * FROM category";
+                    $result=mysqli_query($conn,$sql);
+                    foreach($result as $row)
+                    {
+                        $category_id = $row['id'];
+                        $name= $row['category_name'];
+                    ?>
+                    <option value="<?php echo $category_id; ?>"><?php echo $name;?> </b> </option>
+                    <?php 
+                    }
+                       ?>
+                </select>
+            <input type="date" name="date"  class="form-control" required>
+          <button  type="submit" class="fa fa-save" aria-hidden="true"  style=" border:none" name="save"> save</button>
+        </form>
+        </a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
       <li class="breadcrumb-item">
         <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-in">
         <i class="fa fa-cart-plus" aria-hidden="true"></i>In
@@ -50,7 +74,7 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
         </a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">
+        <a href="history.php" class="nav-link">
         <i class="fa fa-history" aria-hidden="true"> History</i>
         </a>
       </li>
@@ -151,7 +175,6 @@ if (!isset($_SESSION['id'])) {         // condition Check: if session is not set
                   <p>Report</p>
                 </a>
               </li>
-             
             </ul>
           </li>
           </li>

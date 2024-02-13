@@ -29,7 +29,49 @@ if(isset($_POST['updatedata']))
         <?php
     }
 }
-if(isset($_POST['updatenotification']))
+ else if(isset($_POST['out']))
+{
+    $id=$_POST['id'];
+    $item_id = $_POST['main_store_item_id'];
+    $quantity = $_POST['quantity'];
+    $date=$_POST['date'];
+   $st="SELECT quantity from paintmini_mini_item where paint_main_id='$id'";
+   $st1=mysqli_query($conn, $st)  or die(mysqli_error($conn));
+   $st2=mysqli_fetch_assoc($st1);
+   $x=$st2['quantity'];
+   if($x>$quantity){
+    $sql="UPDATE paintmini_mini_item  SET quantity =quantity-'$quantity'where paint_main_id ='$id'";
+    $query_run = $conn->query($sql);
+    $in="INSERT INTO paintmini_mini_out (quantity,date,paint_main_id) values ('$quantity','$date','$id')";
+    $in1=mysqli_query($conn,$in) or die(mysqli_error($conn));
+
+    if($query_run)
+    {
+        ?>
+        <script>
+            alert("update succesfully,thank you");
+        window.location="paint_mini_mini.php";
+        </script>
+        <?php
+    }
+
+   }
+   else{
+    ?>
+        <script>
+            alert("Insufficent Balance,thank you");
+        window.location="paint_mini_mini.php";
+        </script>
+        <?php
+
+   }
+    
+  
+    
+  
+}
+
+else if(isset($_POST['updatenotification']))
 {
     $id=$_POST['id'];
     $item_id = (int)$_POST['item_id'];
