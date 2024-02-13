@@ -5,7 +5,7 @@ git commit -m "first commit"
 git branch -M main
 git remote add origin https://github.com/girmabu/super-paint-and-fiber-stock.git
 git push -u origin main
-
+// This is the command for push and pull the repository
 
 git remote add origin https://github.com/girmabu/super-paint-and-fiber-stock.git
 git branch -M main
